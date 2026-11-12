@@ -1,0 +1,14 @@
+E:\Company TaskManagementSystem\TaskManagement.Domain\bin\Debug\net8.0\TaskManagement.Domain.deps.json
+E:\Company TaskManagementSystem\TaskManagement.Domain\bin\Debug\net8.0\TaskManagement.Domain.runtimeconfig.json
+E:\Company TaskManagementSystem\TaskManagement.Domain\bin\Debug\net8.0\TaskManagement.Domain.dll
+E:\Company TaskManagementSystem\TaskManagement.Domain\bin\Debug\net8.0\TaskManagement.Domain.pdb
+E:\Company TaskManagementSystem\TaskManagement.Domain\obj\Debug\net8.0\TaskManagement.Domain.csproj.AssemblyReference.cache
+E:\Company TaskManagementSystem\TaskManagement.Domain\obj\Debug\net8.0\TaskManagement.Domain.GeneratedMSBuildEditorConfig.editorconfig
+E:\Company TaskManagementSystem\TaskManagement.Domain\obj\Debug\net8.0\TaskManagement.Domain.AssemblyInfoInputs.cache
+E:\Company TaskManagementSystem\TaskManagement.Domain\obj\Debug\net8.0\TaskManagement.Domain.AssemblyInfo.cs
+E:\Company TaskManagementSystem\TaskManagement.Domain\obj\Debug\net8.0\TaskManagement.Domain.csproj.CoreCompileInputs.cache
+E:\Company TaskManagementSystem\TaskManagement.Domain\obj\Debug\net8.0\TaskManagement.Domain.dll
+E:\Company TaskManagementSystem\TaskManagement.Domain\obj\Debug\net8.0\refint\TaskManagement.Domain.dll
+E:\Company TaskManagementSystem\TaskManagement.Domain\obj\Debug\net8.0\TaskManagement.Domain.pdb
+E:\Company TaskManagementSystem\TaskManagement.Domain\obj\Debug\net8.0\TaskManagement.Domain.genruntimeconfig.cache
+E:\Company TaskManagementSystem\TaskManagement.Domain\obj\Debug\net8.0\ref\TaskManagement.Domain.dll

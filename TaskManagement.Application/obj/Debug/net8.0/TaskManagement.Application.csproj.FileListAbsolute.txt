@@ -1,0 +1,15 @@
+E:\Company TaskManagementSystem\TaskManagement.Application\bin\Debug\net8.0\TaskManagement.Application.deps.json
+E:\Company TaskManagementSystem\TaskManagement.Application\bin\Debug\net8.0\TaskManagement.Application.dll
+E:\Company TaskManagementSystem\TaskManagement.Application\bin\Debug\net8.0\TaskManagement.Application.pdb
+E:\Company TaskManagementSystem\TaskManagement.Application\bin\Debug\net8.0\TaskManagement.Domain.dll
+E:\Company TaskManagementSystem\TaskManagement.Application\bin\Debug\net8.0\TaskManagement.Domain.pdb
+E:\Company TaskManagementSystem\TaskManagement.Application\obj\Debug\net8.0\TaskManagement.Application.csproj.AssemblyReference.cache
+E:\Company TaskManagementSystem\TaskManagement.Application\obj\Debug\net8.0\TaskManagement.Application.GeneratedMSBuildEditorConfig.editorconfig
+E:\Company TaskManagementSystem\TaskManagement.Application\obj\Debug\net8.0\TaskManagement.Application.AssemblyInfoInputs.cache
+E:\Company TaskManagementSystem\TaskManagement.Application\obj\Debug\net8.0\TaskManagement.Application.AssemblyInfo.cs
+E:\Company TaskManagementSystem\TaskManagement.Application\obj\Debug\net8.0\TaskManagement.Application.csproj.CoreCompileInputs.cache
+E:\Company TaskManagementSystem\TaskManagement.Application\obj\Debug\net8.0\TaskMana.B5C26166.Up2Date
+E:\Company TaskManagementSystem\TaskManagement.Application\obj\Debug\net8.0\TaskManagement.Application.dll
+E:\Company TaskManagementSystem\TaskManagement.Application\obj\Debug\net8.0\refint\TaskManagement.Application.dll
+E:\Company TaskManagementSystem\TaskManagement.Application\obj\Debug\net8.0\TaskManagement.Application.pdb
+E:\Company TaskManagementSystem\TaskManagement.Application\obj\Debug\net8.0\ref\TaskManagement.Application.dll
