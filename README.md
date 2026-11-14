@@ -181,6 +181,20 @@ The backend follows a layered architecture:
 - Refresh tokens are supported.
 - Sensitive configuration values should not be committed to source control.
 
+## Screenshots
+
+### Login Page
+![Login Page](screenshots/login.png)
+
+### Admin Dashboard
+![Admin Dashboard](screenshots/admin-dashboard.png)
+
+### Task List
+![Task List](screenshots/task-list.png)
+
+### Employee Dashboard
+![Employee Dashboard](screenshots/Employee-dashboard.png)
+
 ## Future Improvements
 
 - Automated unit and integration tests
