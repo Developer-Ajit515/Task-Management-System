@@ -187,13 +187,13 @@ The backend follows a layered architecture:
 ![Login Page](Task-Management-System/screenshots/login.png)
 
 ### Admin Dashboard
-![Admin Dashboard](screenshots/admin-dashboard.png)
+![Admin Dashboard](Task-Management-System/screenshots/admin-dashboard.png)
 
 ### Employee Dashboard
-![Employee Dashboard](screenshots/Employee-dashboard.png)
+![Employee Dashboard](Task-Management-System/screenshots/Employee-dashboard.png)
 
 ### Task List
-![Task List](screenshots/task-list.png)
+![Task List](Task-Management-System/screenshots/task-list.png)
 
 
 ## Future Improvements
