@@ -184,7 +184,7 @@ The backend follows a layered architecture:
 ## Screenshots
 
 ### Login Page
-![Login Page](screenshots/login.png)
+![Login Page](Task-Management-System/screenshots/login.png)
 
 ### Admin Dashboard
 ![Admin Dashboard](screenshots/admin-dashboard.png)
