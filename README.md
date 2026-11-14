@@ -1,92 +1,184 @@
 # Task Management System
 
-A full-stack **Task Management System** developed to simplify task creation, employee management, task assignment, and progress tracking. The application provides secure authentication, role-based authorization, and RESTful API integration.
+A full-stack Task Management System built using **ASP.NET Core Web API, React.js, Entity Framework Core, and SQL Server**. The application helps organizations manage employees, assign tasks, monitor progress, and control access through JWT authentication and role-based authorization.
 
-## 🚀 Features
+## Features
 
-- **User Authentication** – Secure registration and login using JWT authentication.
-- **Role-Based Authorization** – Manage access based on user roles and permissions.
-- **Employee Management** – Create and manage employee accounts.
-- **Task Management** – Create, view, and manage tasks.
-- **Task Assignment** – Assign tasks to employees.
-- **Task Status Tracking** – Update and monitor task progress.
-- **RESTful APIs** – Backend APIs built with ASP.NET Core Web API.
-- **Refresh Token** – Token refresh and revocation functionality.
-- **Responsive UI** – User-friendly React-based interface.
+### Authentication & Authorization
+- User registration and login
+- JWT-based authentication
+- Refresh token support
+- Refresh token revocation
+- Role-based authorization for Admin and Employee
+- Secure password hashing
 
-## 🛠️ Tech Stack
+### Admin Features
+- Manage employees and users
+- Create, assign, update, and delete tasks
+- View task information
+- Monitor task status and progress
+- Access Admin-restricted endpoints
 
-### Frontend
-- React.js
-- JavaScript
-- React Router DOM
-- Axios
-- HTML5
-- CSS3
-- Bootstrap
+### Employee Features
+- View assigned tasks
+- Access personal task information
+- Update task status
+- Access resources according to assigned permissions
 
-### Backend
-- ASP.NET Core Web API
-- C#
-- Entity Framework Core
-- LINQ
-- JWT Authentication
-- Role-Based Authorization
+## Technology Stack
 
-### Database
-- Microsoft SQL Server
+| Layer | Technologies |
+|---|---|
+| Frontend | React.js, JavaScript, HTML5, CSS3, Bootstrap |
+| Routing | React Router DOM |
+| HTTP Client | Axios |
+| Backend | ASP.NET Core Web API, C# |
+| Architecture | Layered / Clean Architecture approach |
+| ORM | Entity Framework Core |
+| Database | Microsoft SQL Server |
+| Authentication | JWT, Refresh Tokens, BCrypt |
+| API Documentation | Swagger / OpenAPI |
+| Tools | Visual Studio, VS Code, Git, GitHub |
 
-### Development Tools
-- Visual Studio
-- Visual Studio Code
-- SQL Server Management Studio
-- Git & GitHub
-- Swagger / OpenAPI
+## Project Architecture
 
-## 📂 Project Structure
+The backend is separated into four projects:
 
 ```text
 Task-Management-System/
 │
-├── Frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── services/
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   └── package.json
+├── TaskManagement.API/
+│   ├── Controllers/
+│   ├── Middleware/
+│   ├── Properties/
+│   ├── Program.cs
+│   └── appsettings.json
 │
-├── Backend/
-│   ├── TaskManagement.API/
-│   ├── TaskManagement.Application/
-│   ├── TaskManagement.Domain/
-│   └── TaskManagement.Infrastructure/
+├── TaskManagement.Application/
+│   ├── DTOs/
+│   ├── Interfaces/
+│   └── Services/
 │
+├── TaskManagement.Domain/
+│   ├── Entities/
+│   ├── Enums/
+│   └── Interfaces/
+│
+├── TaskManagement.Infrastructure/
+│   ├── Data/
+│   ├── Repositories/
+│   └── Services/
+│
+├── TaskManagementSystem.sln
 └── README.md
 ```
 
-## ⚙️ Installation & Setup
+The React frontend is maintained separately. See the frontend setup section below for its actual project directory.
+
+### Architecture Responsibilities
+
+- **API:** HTTP endpoints, authentication, authorization, and middleware.
+- **Application:** Business logic, application services, and DTOs.
+- **Domain:** Core entities, enums, and repository contracts.
+- **Infrastructure:** Entity Framework Core, database access, repositories, and infrastructure services.
+
+## Prerequisites
+
+Install the following before running the project:
+
+- .NET 8 SDK
+- Node.js and npm
+- Microsoft SQL Server LocalDB or SQL Server
+- Visual Studio 2022 or Visual Studio Code
+- Git
+
+## Installation and Setup
 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/Task-Management-System.git
+git clone https://github.com/Developer-Ajit515/Task-Management-System.git
+
+cd Task-Management-System
 ```
 
 ### 2. Backend Setup
 
-- Open the backend solution in Visual Studio.
-- Configure your SQL Server connection string in `appsettings.json`.
-- Apply Entity Framework Core migrations if required.
-- Run the ASP.NET Core Web API project.
+Open PowerShell in the repository root.
 
-### 3. Frontend Setup
-
-Navigate to the frontend directory:
+Restore dependencies:
 
 ```bash
-cd Frontend
+dotnet restore .\TaskManagementSystem.sln
+```
+
+Build the solution:
+
+```bash
+dotnet build .\TaskManagementSystem.sln
+```
+
+### 3. Configure the Database
+
+The development configuration uses SQL Server LocalDB.
+
+Update the connection string in your local configuration if you use a different SQL Server instance.
+
+Example:
+
+```text
+Server=(localdb)\MSSQLLocalDB;
+Database=Db_TaskManagementSystem;
+Trusted_Connection=True;
+MultipleActiveResultSets=True;
+```
+
+If the project contains Entity Framework Core migrations, apply them using the API project as the startup project and the appropriate migrations project:
+
+```bash
+dotnet ef database update --project <verified-migrations-project> --startup-project .\TaskManagement.API\TaskManagement.API.csproj
+```
+
+Install the EF Core CLI tool if needed:
+
+```bash
+dotnet tool install --global dotnet-ef
+```
+
+### 4. Configure JWT Secret
+
+The JWT signing key must not be committed to source control.
+
+Initialize User Secrets for the API project:
+
+```bash
+dotnet user-secrets init --project .\TaskManagement.API\TaskManagement.API.csproj
+```
+
+Set a strong, randomly generated secret:
+
+```bash
+dotnet user-secrets set "Jwt:Key" "YOUR_GENERATED_SECRET" --project .\TaskManagement.API\TaskManagement.API.csproj
+```
+
+Keep the JWT issuer and audience settings in the appropriate application configuration.
+
+### 5. Run the Backend
+
+```bash
+dotnet run --project .\TaskManagement.API\TaskManagement.API.csproj
+```
+
+The API URL and Swagger URL are determined by the API project's launch settings.
+
+Open the Swagger URL shown by the application to explore and test the endpoints.
+
+### 6. Frontend Setup
+
+Navigate to the actual React frontend directory (replace the path below with the verified directory):
+
+```bash
+cd <frontend-directory>
 ```
 
 Install dependencies:
@@ -95,32 +187,71 @@ Install dependencies:
 npm install
 ```
 
-Start the React development server:
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
-### 4. Access the Application
+Open the frontend URL displayed in the terminal.
 
-Open the frontend application in your browser using the development URL displayed in the terminal.
+## Authentication and Authorization
 
-Backend API documentation can be accessed through Swagger when enabled.
+The application uses JWT Bearer authentication.
 
-## 🔐 Authentication
+1. Register a user or log in with existing credentials.
+2. The API returns an authentication token after successful login.
+3. Include the access token in protected API requests:
 
-The application uses JWT-based authentication to secure API endpoints. Role-based authorization ensures that users can access resources according to their assigned permissions.
+```http
+Authorization: Bearer YOUR_ACCESS_TOKEN
+```
 
-## 🎯 Project Objective
+4. Role-based authorization restricts Admin and Employee endpoints.
+5. Refresh token functionality supports renewing access tokens according to the configured expiry policy.
 
-The main objective of this project is to build a practical task management solution that helps organizations manage employees, distribute tasks, track work progress, and improve team productivity.
+Never publish real credentials, signing keys, or refresh tokens in the repository.
 
-## 👨‍💻 Developer
+## API Documentation
 
-**Developed as a Full Stack Web Development Project.**
+Swagger provides interactive API documentation in Development mode.
 
-Technologies: React.js | ASP.NET Core Web API | C# | Entity Framework Core | SQL Server
+The API includes authentication, task management, user management, and dashboard functionality. Refer to the Swagger documentation for the actual routes, request models, and response structures.
+
+## Screenshots
+
+Add screenshots of the application here:
+
+- Login page
+- Registration page
+- Admin dashboard
+- Employee dashboard
+- Task list
+- Create / Edit task
+- Task details
+
+Example:
+
+```markdown
+![Login Page](docs/screenshots/login.png)
+```
+
+## Future Improvements
+
+- Automated unit and integration testing
+- Enhanced API validation and error handling
+- Improved reporting and analytics
+- CI/CD pipeline
+- Deployment configuration for production
+
+## Developer
+
+**Ajit Singh**
+
+Full Stack .NET Developer
+
+Technologies: C# | ASP.NET Core Web API | React.js | SQL Server | Entity Framework Core
 
 ---
 
-⭐ If you find this project useful, consider giving it a star!
+If you find this project useful, consider giving it a ⭐ on GitHub.
