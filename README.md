@@ -1,48 +1,40 @@
 # Task Management System
 
-A full-stack Task Management System built using **ASP.NET Core Web API, React.js, Entity Framework Core, and SQL Server**. The application helps organizations manage employees, assign tasks, monitor progress, and control access through JWT authentication and role-based authorization.
+A full-stack Task Management System built using **ASP.NET Core Web API, Entity Framework Core, SQL Server, and React**. The application provides secure authentication and role-based access for Admin and Employee users.
+
+## Tech Stack
+
+### Backend
+- ASP.NET Core Web API (.NET 8)
+- C#
+- Entity Framework Core
+- SQL Server
+- JWT Authentication
+- BCrypt Password Hashing
+- Clean / Layered Architecture
+
+### Frontend
+- React
+- JavaScript
+- HTML5
+- CSS3
+- Axios
+- React Router
 
 ## Features
 
-### Authentication & Authorization
 - User registration and login
 - JWT-based authentication
+- Role-based authorization (Admin and Employee)
+- Admin task management
+- Employee-specific task access
+- Task creation, updating, deletion and viewing
+- Task assignment to employees
+- Task status management
+- Input validation and exception handling
 - Refresh token support
-- Refresh token revocation
-- Role-based authorization for Admin and Employee
-- Secure password hashing
 
-### Admin Features
-- Manage employees and users
-- Create, assign, update, and delete tasks
-- View task information
-- Monitor task status and progress
-- Access Admin-restricted endpoints
-
-### Employee Features
-- View assigned tasks
-- Access personal task information
-- Update task status
-- Access resources according to assigned permissions
-
-## Technology Stack
-
-| Layer | Technologies |
-|---|---|
-| Frontend | React.js, JavaScript, HTML5, CSS3, Bootstrap |
-| Routing | React Router DOM |
-| HTTP Client | Axios |
-| Backend | ASP.NET Core Web API, C# |
-| Architecture | Layered / Clean Architecture approach |
-| ORM | Entity Framework Core |
-| Database | Microsoft SQL Server |
-| Authentication | JWT, Refresh Tokens, BCrypt |
-| API Documentation | Swagger / OpenAPI |
-| Tools | Visual Studio, VS Code, Git, GitHub |
-
-## Project Architecture
-
-The backend is separated into four projects:
+## Project Structure
 
 ```text
 Task-Management-System/
@@ -67,191 +59,137 @@ Task-Management-System/
 ├── TaskManagement.Infrastructure/
 │   ├── Data/
 │   ├── Repositories/
-│   └── Services/
+│   ├── Services/
+│   └── Migrations/
 │
-├── TaskManagementSystem.sln
-└── README.md
+├── taskmanagement-client/
+│   ├── public/
+│   ├── src/
+│   └── package.json
+│
+└── TaskManagementSystem.sln
 ```
 
-The React frontend is maintained separately. See the frontend setup section below for its actual project directory.
-
-### Architecture Responsibilities
-
-- **API:** HTTP endpoints, authentication, authorization, and middleware.
-- **Application:** Business logic, application services, and DTOs.
-- **Domain:** Core entities, enums, and repository contracts.
-- **Infrastructure:** Entity Framework Core, database access, repositories, and infrastructure services.
-
-## Prerequisites
-
-Install the following before running the project:
-
-- .NET 8 SDK
-- Node.js and npm
-- Microsoft SQL Server LocalDB or SQL Server
-- Visual Studio 2022 or Visual Studio Code
-- Git
-
-## Installation and Setup
+## Getting Started
 
 ### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/Developer-Ajit515/Task-Management-System.git
-
 cd Task-Management-System
 ```
 
 ### 2. Backend Setup
 
-Open PowerShell in the repository root.
+Open the solution in Visual Studio 2022 or use the .NET CLI.
 
 Restore dependencies:
 
 ```bash
-dotnet restore .\TaskManagementSystem.sln
-```
-
-Build the solution:
-
-```bash
-dotnet build .\TaskManagementSystem.sln
+dotnet restore TaskManagementSystem.sln
 ```
 
 ### 3. Configure the Database
 
-The development configuration uses SQL Server LocalDB.
+Update the SQL Server connection string in your development configuration.
 
-Update the connection string in your local configuration if you use a different SQL Server instance.
+Do not commit database passwords or production credentials.
 
-Example:
+### 4. Configure JWT Secret
 
-```text
-Server=(localdb)\MSSQLLocalDB;
-Database=Db_TaskManagementSystem;
-Trusted_Connection=True;
-MultipleActiveResultSets=True;
+Initialize User Secrets for the API project:
+
+```powershell
+dotnet user-secrets init --project ".\TaskManagement.API\TaskManagement.API.csproj"
 ```
 
-If the project contains Entity Framework Core migrations, apply them using the API project as the startup project and the appropriate migrations project:
+Generate a secure secret locally and store it:
+
+```powershell
+$rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+$bytes = New-Object byte[] 64
+$rng.GetBytes($bytes)
+$key = [Convert]::ToBase64String($bytes)
+$rng.Dispose()
+
+dotnet user-secrets set "Jwt:Key" "$key" --project ".\TaskManagement.API\TaskManagement.API.csproj"
+```
+
+Keep the generated secret private. Never commit it to GitHub.
+
+### 5. Apply Entity Framework Core Migrations
+
+Migrations are maintained in the `TaskManagement.Infrastructure` project.
+
+From the repository root, run:
 
 ```bash
-dotnet ef database update --project <verified-migrations-project> --startup-project .\TaskManagement.API\TaskManagement.API.csproj
+dotnet ef database update --project TaskManagement.Infrastructure --startup-project TaskManagement.API
 ```
 
-Install the EF Core CLI tool if needed:
+If EF Core CLI is not installed:
 
 ```bash
 dotnet tool install --global dotnet-ef
 ```
 
-### 4. Configure JWT Secret
-
-The JWT signing key must not be committed to source control.
-
-Initialize User Secrets for the API project:
+### 6. Run the Backend
 
 ```bash
-dotnet user-secrets init --project .\TaskManagement.API\TaskManagement.API.csproj
+dotnet run --project TaskManagement.API
 ```
 
-Set a strong, randomly generated secret:
+Check the API URL and Swagger URL in the API project's `Properties/launchSettings.json` or terminal output.
+
+### 7. Frontend Setup
+
+Open another terminal:
 
 ```bash
-dotnet user-secrets set "Jwt:Key" "YOUR_GENERATED_SECRET" --project .\TaskManagement.API\TaskManagement.API.csproj
-```
-
-Keep the JWT issuer and audience settings in the appropriate application configuration.
-
-### 5. Run the Backend
-
-```bash
-dotnet run --project .\TaskManagement.API\TaskManagement.API.csproj
-```
-
-The API URL and Swagger URL are determined by the API project's launch settings.
-
-Open the Swagger URL shown by the application to explore and test the endpoints.
-
-### 6. Frontend Setup
-
-Navigate to the actual React frontend directory (replace the path below with the verified directory):
-
-```bash
-cd <frontend-directory>
-```
-
-Install dependencies:
-
-```bash
+cd taskmanagement-client
 npm install
-```
-
-Start the development server:
-
-```bash
 npm run dev
 ```
 
-Open the frontend URL displayed in the terminal.
+The React application will start using the development URL shown in the terminal.
+
+Make sure the frontend API base URL points to the running backend API.
 
 ## Authentication and Authorization
 
-The application uses JWT Bearer authentication.
+The application uses JWT authentication.
 
-1. Register a user or log in with existing credentials.
-2. The API returns an authentication token after successful login.
-3. Include the access token in protected API requests:
+- **Admin:** Can manage tasks and access administrative task endpoints.
+- **Employee:** Can access assigned tasks and perform permitted task-status updates.
 
-```http
-Authorization: Bearer YOUR_ACCESS_TOKEN
-```
+Protected API endpoints require a valid JWT access token.
 
-4. Role-based authorization restricts Admin and Employee endpoints.
-5. Refresh token functionality supports renewing access tokens according to the configured expiry policy.
+## Architecture
 
-Never publish real credentials, signing keys, or refresh tokens in the repository.
+The backend follows a layered architecture:
 
-## API Documentation
+- **API Layer:** Controllers, middleware and HTTP request handling.
+- **Application Layer:** Business services, DTOs and service interfaces.
+- **Domain Layer:** Core entities, enums and repository contracts.
+- **Infrastructure Layer:** Database context, EF Core migrations, repositories and infrastructure services.
 
-Swagger provides interactive API documentation in Development mode.
+## Security
 
-The API includes authentication, task management, user management, and dashboard functionality. Refer to the Swagger documentation for the actual routes, request models, and response structures.
-
-## Screenshots
-
-Add screenshots of the application here:
-
-- Login page
-- Registration page
-- Admin dashboard
-- Employee dashboard
-- Task list
-- Create / Edit task
-- Task details
-
-Example:
-
-```markdown
-![Login Page](docs/screenshots/login.png)
-```
+- JWT secret is configured using .NET User Secrets for local development.
+- Passwords are hashed using BCrypt.
+- Role-based authorization protects restricted endpoints.
+- Refresh tokens are supported.
+- Sensitive configuration values should not be committed to source control.
 
 ## Future Improvements
 
-- Automated unit and integration testing
-- Enhanced API validation and error handling
-- Improved reporting and analytics
-- CI/CD pipeline
-- Deployment configuration for production
+- Automated unit and integration tests
+- Improved API documentation
+- Additional reporting and dashboard features
+- Deployment configuration
 
-## Developer
+## Author
 
 **Ajit Singh**
 
-Full Stack .NET Developer
-
-Technologies: C# | ASP.NET Core Web API | React.js | SQL Server | Entity Framework Core
-
----
-
-If you find this project useful, consider giving it a ⭐ on GitHub.
+GitHub: https://github.com/Developer-Ajit515
