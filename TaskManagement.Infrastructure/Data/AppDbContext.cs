@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.EntityFrameworkCore;
 using TaskManagement.Domain.Entities;
 
 namespace TaskManagement.Infrastructure.Data;
@@ -11,20 +12,19 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<User> Users => Set<User>();
-
     public DbSet<Role> Roles => Set<Role>();
-
     public DbSet<UserRole> UserRoles => Set<UserRole>();
-
     public DbSet<TaskItem> Tasks => Set<TaskItem>();
-
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        
+        // ==========================================
+        // USER CONFIGURATION
+        // ==========================================
+
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(x => x.Id);
@@ -44,7 +44,10 @@ public class AppDbContext : DbContext
                 .IsRequired();
         });
 
-        
+        // ==========================================
+        // ROLE CONFIGURATION
+        // ==========================================
+
         modelBuilder.Entity<Role>(entity =>
         {
             entity.HasKey(x => x.Id);
@@ -57,21 +60,33 @@ public class AppDbContext : DbContext
                 .IsUnique();
         });
 
-        
+        // ==========================================
+        // USER ROLE CONFIGURATION
+        // ==========================================
+
         modelBuilder.Entity<UserRole>(entity =>
         {
-            entity.HasKey(x => new { x.UserId, x.RoleId });
+            entity.HasKey(x => new
+            {
+                x.UserId,
+                x.RoleId
+            });
 
             entity.HasOne(x => x.User)
                 .WithMany(x => x.UserRoles)
-                .HasForeignKey(x => x.UserId);
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             entity.HasOne(x => x.Role)
                 .WithMany(x => x.UserRoles)
-                .HasForeignKey(x => x.RoleId);
+                .HasForeignKey(x => x.RoleId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
-        
+        // ==========================================
+        // TASK CONFIGURATION
+        // ==========================================
+
         modelBuilder.Entity<TaskItem>(entity =>
         {
             entity.HasKey(x => x.Id);
@@ -89,22 +104,36 @@ public class AppDbContext : DbContext
             entity.Property(x => x.Status)
                 .HasConversion<int>();
 
+            // Assigned employee relationship
             entity.HasOne(x => x.AssignedUser)
                 .WithMany(x => x.AssignedTasks)
                 .HasForeignKey(x => x.AssignedUserId)
+                .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Task creator relationship
             entity.HasOne(x => x.CreatedByUser)
                 .WithMany(x => x.CreatedTasks)
                 .HasForeignKey(x => x.CreatedByUserId)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Indexes
             entity.HasIndex(x => x.AssignedUserId);
 
             entity.HasIndex(x => x.CreatedDate);
+
+            entity.HasIndex(x => new
+            {
+                x.AssignedUserId,
+                x.CreatedDate
+            });
         });
 
-        
+        // ==========================================
+        // REFRESH TOKEN CONFIGURATION
+        // ==========================================
+
         modelBuilder.Entity<RefreshToken>(entity =>
         {
             entity.HasKey(x => x.Id);
@@ -122,10 +151,21 @@ public class AppDbContext : DbContext
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
-        
+        // ==========================================
+        // ROLE SEED DATA
+        // ==========================================
+
         modelBuilder.Entity<Role>().HasData(
-            new Role { Id = 1, Name = "Admin" },
-            new Role { Id = 2, Name = "Employee" }
+            new Role
+            {
+                Id = 1,
+                Name = "Admin"
+            },
+            new Role
+            {
+                Id = 2,
+                Name = "Employee"
+            }
         );
     }
 }

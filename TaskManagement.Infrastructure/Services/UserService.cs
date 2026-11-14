@@ -115,4 +115,14 @@ public class UserService : IUserService
             CreatedAt = user.CreatedAt
         };
     }
+
+    // GET ACTIVE EMPLOYEES
+    public async Task<IEnumerable<UserResponseDto>> GetActiveEmployeesAsync()
+    {
+        var employees = await _userRepository.GetActiveEmployeesAsync();
+
+        return employees
+            .Select(MapToResponse)
+            .ToList();
+    }
 }

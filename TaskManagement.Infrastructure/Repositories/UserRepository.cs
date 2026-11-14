@@ -80,4 +80,18 @@ public class UserRepository : IUserRepository
 
         return true;
     }
+
+    public async Task<IEnumerable<User>> GetActiveEmployeesAsync()
+    {
+        return await _context.Users
+        .AsNoTracking()
+        .Where(user =>
+            user.IsActive &&
+            user.UserRoles.Any(userRole =>
+                userRole.Role.Name == "Employee"))
+        .Include(user => user.UserRoles)
+            .ThenInclude(userRole => userRole.Role)
+        .OrderBy(user => user.FullName)
+        .ToListAsync();
+    }
 }

@@ -21,6 +21,10 @@ public class TaskService : ITaskService
         _userRepository = userRepository;
     }
 
+    // ==========================================
+    // ADMIN: GET ALL TASKS
+    // ==========================================
+
     public async Task<PagedResultDto<TaskResponseDto>> GetAllTasksAsync(
         int pageNumber,
         int pageSize,
@@ -33,6 +37,20 @@ public class TaskService : ITaskService
 
         if (assignedUserId.HasValue && assignedUserId.Value <= 0)
             throw new ArgumentException("Invalid assigned user ID.");
+
+        if (status.HasValue &&
+            !Enum.IsDefined(
+                typeof(TaskManagement.Domain.Enums.TaskStatus),
+                status.Value))
+        {
+            throw new ArgumentException("Invalid task status.");
+        }
+
+        if (priority.HasValue &&
+            !Enum.IsDefined(typeof(TaskPriority), priority.Value))
+        {
+            throw new ArgumentException("Invalid task priority.");
+        }
 
         var result = await _taskRepository.GetPagedAsync(
             pageNumber,
@@ -49,6 +67,10 @@ public class TaskService : ITaskService
             result.TotalCount);
     }
 
+    // ==========================================
+    // EMPLOYEE: GET MY ASSIGNED TASKS
+    // ==========================================
+
     public async Task<PagedResultDto<TaskResponseDto>> GetMyTasksAsync(
         int userId,
         int pageNumber,
@@ -57,6 +79,17 @@ public class TaskService : ITaskService
         TaskManagement.Domain.Enums.TaskStatus? status)
     {
         ValidatePagination(ref pageNumber, ref pageSize);
+
+        if (userId <= 0)
+            throw new UnauthorizedAccessException("Invalid user ID.");
+
+        if (status.HasValue &&
+            !Enum.IsDefined(
+                typeof(TaskManagement.Domain.Enums.TaskStatus),
+                status.Value))
+        {
+            throw new ArgumentException("Invalid task status.");
+        }
 
         var result = await _taskRepository.GetPagedAsync(
             pageNumber,
@@ -73,17 +106,57 @@ public class TaskService : ITaskService
             result.TotalCount);
     }
 
+    // ==========================================
+    // ADMIN: GET TASK BY ID
+    // ==========================================
+
     public async Task<TaskResponseDto?> GetTaskByIdAsync(int id)
     {
+        if (id <= 0)
+            throw new ArgumentException("Invalid task ID.");
+
         var task = await _taskRepository.GetByIdAsync(id);
 
         return task == null ? null : MapToDto(task);
     }
 
+    // ==========================================
+    // EMPLOYEE: GET MY TASK BY ID
+    // ==========================================
+
+    public async Task<TaskResponseDto?> GetMyTaskByIdAsync(
+        int id,
+        int userId)
+    {
+        if (id <= 0)
+            throw new ArgumentException("Invalid task ID.");
+
+        if (userId <= 0)
+            throw new UnauthorizedAccessException("Invalid user ID.");
+
+        var task = await _taskRepository.GetByIdAsync(id);
+
+        // Employee can only view assigned tasks.
+        if (task == null || task.AssignedUserId != userId)
+            throw new KeyNotFoundException("Task not found.");
+
+        return MapToDto(task);
+    }
+
+    // ==========================================
+    // ADMIN: CREATE TASK
+    // ==========================================
+
     public async Task<TaskResponseDto> CreateTaskAsync(
         CreateTaskDto dto,
         int createdByUserId)
     {
+        if (dto == null)
+            throw new ArgumentNullException(nameof(dto));
+
+        if (createdByUserId <= 0)
+            throw new UnauthorizedAccessException("Invalid creator ID.");
+
         if (string.IsNullOrWhiteSpace(dto.Title))
             throw new ArgumentException("Task title is required.");
 
@@ -95,11 +168,19 @@ public class TaskService : ITaskService
         var task = new TaskItem
         {
             Title = dto.Title.Trim(),
-            Description = dto.Description,
+
+            Description = string.IsNullOrWhiteSpace(dto.Description)
+                ? null
+                : dto.Description.Trim(),
+
             Priority = dto.Priority,
+
             Status = TaskManagement.Domain.Enums.TaskStatus.Pending,
+
             AssignedUserId = dto.AssignedUserId,
+
             CreatedByUserId = createdByUserId,
+
             CreatedDate = DateTime.UtcNow
         };
 
@@ -107,11 +188,27 @@ public class TaskService : ITaskService
 
         var savedTask = await _taskRepository.GetByIdAsync(task.Id);
 
-        return MapToDto(savedTask!);
+        if (savedTask == null)
+            throw new InvalidOperationException(
+                "Task could not be retrieved after creation.");
+
+        return MapToDto(savedTask);
     }
 
-    public async Task UpdateTaskAsync(int id, UpdateTaskDto dto)
+    // ==========================================
+    // ADMIN: UPDATE TASK
+    // ==========================================
+
+    public async Task UpdateTaskAsync(
+        int id,
+        UpdateTaskDto dto)
     {
+        if (dto == null)
+            throw new ArgumentNullException(nameof(dto));
+
+        if (id <= 0)
+            throw new ArgumentException("Invalid task ID.");
+
         var task = await _taskRepository.GetByIdAsync(id);
 
         if (task == null)
@@ -126,9 +223,15 @@ public class TaskService : ITaskService
         await ValidateAssignedUserAsync(dto.AssignedUserId);
 
         task.Title = dto.Title.Trim();
-        task.Description = dto.Description;
+
+        task.Description = string.IsNullOrWhiteSpace(dto.Description)
+            ? null
+            : dto.Description.Trim();
+
         task.Priority = dto.Priority;
+
         task.AssignedUserId = dto.AssignedUserId;
+
         task.UpdatedDate = DateTime.UtcNow;
 
         _taskRepository.Update(task);
@@ -136,8 +239,15 @@ public class TaskService : ITaskService
         await _taskRepository.SaveChangesAsync();
     }
 
+    // ==========================================
+    // ADMIN: DELETE TASK
+    // ==========================================
+
     public async Task DeleteTaskAsync(int id)
     {
+        if (id <= 0)
+            throw new ArgumentException("Invalid task ID.");
+
         var task = await _taskRepository.GetByIdAsync(id);
 
         if (task == null)
@@ -148,13 +258,24 @@ public class TaskService : ITaskService
         await _taskRepository.SaveChangesAsync();
     }
 
+    // ==========================================
+    // EMPLOYEE: UPDATE ASSIGNED TASK STATUS
+    // ==========================================
+
     public async Task UpdateTaskStatusAsync(
         int id,
         int userId,
         TaskManagement.Domain.Enums.TaskStatus status)
     {
+        if (id <= 0)
+            throw new ArgumentException("Invalid task ID.");
+
+        if (userId <= 0)
+            throw new UnauthorizedAccessException("Invalid user ID.");
+
         if (!Enum.IsDefined(
-            typeof(TaskManagement.Domain.Enums.TaskStatus), status))
+            typeof(TaskManagement.Domain.Enums.TaskStatus),
+            status))
         {
             throw new ArgumentException("Invalid task status.");
         }
@@ -165,10 +286,13 @@ public class TaskService : ITaskService
             throw new KeyNotFoundException("Task not found.");
 
         if (task.AssignedUserId != userId)
+        {
             throw new ForbiddenException(
-     "You can only update your assigned tasks.");
+                "You can only update your assigned tasks.");
+        }
 
         task.Status = status;
+
         task.UpdatedDate = DateTime.UtcNow;
 
         _taskRepository.Update(task);
@@ -176,6 +300,9 @@ public class TaskService : ITaskService
         await _taskRepository.SaveChangesAsync();
     }
 
+    // ==========================================
+    // VALIDATE ASSIGNED EMPLOYEE
+    // ==========================================
 
     private async Task ValidateAssignedUserAsync(int? userId)
     {
@@ -195,6 +322,9 @@ public class TaskService : ITaskService
         }
     }
 
+    // ==========================================
+    // PAGINATION VALIDATION
+    // ==========================================
 
     private static void ValidatePagination(
         ref int pageNumber,
@@ -210,6 +340,10 @@ public class TaskService : ITaskService
             pageSize = 100;
     }
 
+    // ==========================================
+    // CREATE PAGED RESULT
+    // ==========================================
+
     private static PagedResultDto<TaskResponseDto> CreatePagedResult(
         List<TaskItem> tasks,
         int pageNumber,
@@ -219,26 +353,42 @@ public class TaskService : ITaskService
         return new PagedResultDto<TaskResponseDto>
         {
             Data = tasks.Select(MapToDto).ToList(),
+
             PageNumber = pageNumber,
+
             PageSize = pageSize,
+
             TotalRecords = totalRecords,
+
             TotalPages = (int)Math.Ceiling(
                 totalRecords / (double)pageSize)
         };
     }
+
+    // ==========================================
+    // MAP ENTITY TO DTO
+    // ==========================================
 
     private static TaskResponseDto MapToDto(TaskItem task)
     {
         return new TaskResponseDto
         {
             Id = task.Id,
+
             Title = task.Title,
+
             Description = task.Description,
+
             Priority = task.Priority,
+
             Status = task.Status,
+
             AssignedUserId = task.AssignedUserId,
+
             AssignedUserName = task.AssignedUser?.FullName,
+
             CreatedByName = task.CreatedByUser?.FullName ?? "",
+
             CreatedDate = task.CreatedDate
         };
     }

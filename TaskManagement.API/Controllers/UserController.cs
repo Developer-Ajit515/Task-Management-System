@@ -109,4 +109,24 @@ public class UserController : ControllerBase
             message = "User deactivated successfully."
         });
     }
+
+
+    // ==========================================
+    // GET ACTIVE EMPLOYEES (ADMIN ONLY)
+    // ==========================================
+
+    [HttpGet("employees")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> GetActiveEmployees()
+    {
+        var employees = await _userService.GetActiveEmployeesAsync();
+
+        return Ok(new
+        {
+            success = true,
+            message = "Active employees retrieved successfully.",
+            data = employees
+        });
+    }
+
 }

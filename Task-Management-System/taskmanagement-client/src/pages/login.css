@@ -1,0 +1,131 @@
+
+/* Login Page - Isolated CSS */
+
+.login-page {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    background: linear-gradient(135deg, #172554, #2563eb, #60a5fa);
+    font-family: Arial, sans-serif;
+}
+
+.login-page .login-box {
+    width: 100%;
+    max-width: 430px;
+    padding: 40px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.20);
+}
+
+.login-page .login-heading {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-page .login-heading h2 {
+    color: #1e293b;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 10px;
+}
+
+.login-page .login-heading p {
+    color: #64748b;
+    font-size: 14px;
+    margin: 0;
+}
+
+.login-page .login-field {
+    margin-bottom: 20px;
+}
+
+.login-page .login-field label {
+    display: block;
+    color: #334155;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.login-page .login-field input {
+    width: 100%;
+    height: 48px;
+    padding: 12px 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #1e293b;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+
+.login-page .login-field input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.login-page .login-submit {
+    width: 100%;
+    height: 48px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-page .login-submit:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+.login-page .login-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.login-page .login-register {
+    text-align: center;
+    margin-top: 25px;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.login-page .login-register a {
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.login-page .login-register a:hover {
+    text-decoration: underline;
+}
+
+.login-page .login-error {
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 7px;
+    background: #fee2e2;
+    color: #b91c1c;
+    font-size: 14px;
+}
+
+@media (max-width: 480px) {
+    .login-page .login-box {
+        padding: 28px 22px;
+    }
+
+    .login-page .login-heading h2 {
+        font-size: 24px;
+    }
+}

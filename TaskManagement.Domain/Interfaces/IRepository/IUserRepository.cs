@@ -24,4 +24,7 @@ public interface IUserRepository
 
     // DEACTIVATE USER
     Task<bool> DeactivateAsync(int id);
+
+    // GET ACTIVE EMPLOYEES
+    Task<IEnumerable<User>> GetActiveEmployeesAsync();
 }

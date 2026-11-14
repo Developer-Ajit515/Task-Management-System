@@ -26,6 +26,11 @@ public interface ITaskService
     // Get task by ID
     Task<TaskResponseDto?> GetTaskByIdAsync(int id);
 
+    // Employee: Get assigned task by ID
+    Task<TaskResponseDto?> GetMyTaskByIdAsync(
+        int id,
+        int userId);
+
     // Create task
     Task<TaskResponseDto> CreateTaskAsync(
         CreateTaskDto dto,

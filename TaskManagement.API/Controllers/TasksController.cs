@@ -102,6 +102,36 @@ public class TasksController : ControllerBase
         return Ok(result);
     }
 
+
+    // ==========================================
+    // EMPLOYEE: GET MY TASK BY ID
+    // ==========================================
+
+    [HttpGet("my-tasks/{id:int}")]
+    [Authorize(Roles = "Employee")]
+    public async Task<IActionResult> GetMyTaskById(int id)
+    {
+        if (id <= 0)
+            return BadRequest(new
+            {
+                message = "Invalid task ID."
+            });
+
+        var userId = GetCurrentUserId();
+
+        var result = await _taskService.GetMyTaskByIdAsync(
+            id,
+            userId
+        );
+
+        return Ok(new
+        {
+            success = true,
+            message = "Task retrieved successfully.",
+            data = result
+        });
+    }
+
     // ==========================================
     // ADMIN: CREATE TASK
     // ==========================================

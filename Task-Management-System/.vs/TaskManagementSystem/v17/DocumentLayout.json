@@ -1,0 +1,224 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\Company TaskManagementSystem\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{52A37142-2F4D-4CA5-8189-244559801747}|TaskManagement.Application\\TaskManagement.Application.csproj|e:\\company taskmanagementsystem\\taskmanagement.application\\interfaces\\iservices\\itaskservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{52A37142-2F4D-4CA5-8189-244559801747}|TaskManagement.Application\\TaskManagement.Application.csproj|solutionrelative:taskmanagement.application\\interfaces\\iservices\\itaskservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{208C8BA3-308B-42B7-B923-BD6C71043C34}|TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj|e:\\company taskmanagementsystem\\taskmanagement.infrastructure\\services\\taskservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{208C8BA3-308B-42B7-B923-BD6C71043C34}|TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj|solutionrelative:taskmanagement.infrastructure\\services\\taskservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7430AF9-F229-4B33-BD0B-3D315A25F8FC}|TaskManagement.API\\TaskManagement.API.csproj|e:\\company taskmanagementsystem\\taskmanagement.api\\controllers\\taskscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7430AF9-F229-4B33-BD0B-3D315A25F8FC}|TaskManagement.API\\TaskManagement.API.csproj|solutionrelative:taskmanagement.api\\controllers\\taskscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52A37142-2F4D-4CA5-8189-244559801747}|TaskManagement.Application\\TaskManagement.Application.csproj|e:\\company taskmanagementsystem\\taskmanagement.application\\dtos\\tasks\\taskresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{52A37142-2F4D-4CA5-8189-244559801747}|TaskManagement.Application\\TaskManagement.Application.csproj|solutionrelative:taskmanagement.application\\dtos\\tasks\\taskresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52A37142-2F4D-4CA5-8189-244559801747}|TaskManagement.Application\\TaskManagement.Application.csproj|e:\\company taskmanagementsystem\\taskmanagement.application\\interfaces\\iservices\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{52A37142-2F4D-4CA5-8189-244559801747}|TaskManagement.Application\\TaskManagement.Application.csproj|solutionrelative:taskmanagement.application\\interfaces\\iservices\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52A37142-2F4D-4CA5-8189-244559801747}|TaskManagement.Application\\TaskManagement.Application.csproj|e:\\company taskmanagementsystem\\taskmanagement.application\\dtos\\auth\\userresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{52A37142-2F4D-4CA5-8189-244559801747}|TaskManagement.Application\\TaskManagement.Application.csproj|solutionrelative:taskmanagement.application\\dtos\\auth\\userresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7430AF9-F229-4B33-BD0B-3D315A25F8FC}|TaskManagement.API\\TaskManagement.API.csproj|e:\\company taskmanagementsystem\\taskmanagement.api\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7430AF9-F229-4B33-BD0B-3D315A25F8FC}|TaskManagement.API\\TaskManagement.API.csproj|solutionrelative:taskmanagement.api\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7430AF9-F229-4B33-BD0B-3D315A25F8FC}|TaskManagement.API\\TaskManagement.API.csproj|e:\\company taskmanagementsystem\\taskmanagement.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{B7430AF9-F229-4B33-BD0B-3D315A25F8FC}|TaskManagement.API\\TaskManagement.API.csproj|solutionrelative:taskmanagement.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7430AF9-F229-4B33-BD0B-3D315A25F8FC}|TaskManagement.API\\TaskManagement.API.csproj|e:\\company taskmanagementsystem\\taskmanagement.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7430AF9-F229-4B33-BD0B-3D315A25F8FC}|TaskManagement.API\\TaskManagement.API.csproj|solutionrelative:taskmanagement.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{208C8BA3-308B-42B7-B923-BD6C71043C34}|TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj|e:\\company taskmanagementsystem\\taskmanagement.infrastructure\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{208C8BA3-308B-42B7-B923-BD6C71043C34}|TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj|solutionrelative:taskmanagement.infrastructure\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{208C8BA3-308B-42B7-B923-BD6C71043C34}|TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj|e:\\company taskmanagementsystem\\taskmanagement.infrastructure\\repositories\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{208C8BA3-308B-42B7-B923-BD6C71043C34}|TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj|solutionrelative:taskmanagement.infrastructure\\repositories\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ED6B97E9-28DD-40CC-B729-0BA981ABE73A}|TaskManagement.Domain\\TaskManagement.Domain.csproj|e:\\company taskmanagementsystem\\taskmanagement.domain\\interfaces\\irepository\\iuserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ED6B97E9-28DD-40CC-B729-0BA981ABE73A}|TaskManagement.Domain\\TaskManagement.Domain.csproj|solutionrelative:taskmanagement.domain\\interfaces\\irepository\\iuserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ITaskService.cs",
+              "DocumentMoniker": "E:\\Company TaskManagementSystem\\TaskManagement.Application\\Interfaces\\IServices\\ITaskService.cs",
+              "RelativeDocumentMoniker": "TaskManagement.Application\\Interfaces\\IServices\\ITaskService.cs",
+              "ToolTip": "E:\\Company TaskManagementSystem\\TaskManagement.Application\\Interfaces\\IServices\\ITaskService.cs",
+              "RelativeToolTip": "TaskManagement.Application\\Interfaces\\IServices\\ITaskService.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAQwB8AAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-14T05:41:17.959Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "TaskResponseDto.cs",
+              "DocumentMoniker": "E:\\Company TaskManagementSystem\\TaskManagement.Application\\DTOs\\Tasks\\TaskResponseDto.cs",
+              "RelativeDocumentMoniker": "TaskManagement.Application\\DTOs\\Tasks\\TaskResponseDto.cs",
+              "ToolTip": "E:\\Company TaskManagementSystem\\TaskManagement.Application\\DTOs\\Tasks\\TaskResponseDto.cs",
+              "RelativeToolTip": "TaskManagement.Application\\DTOs\\Tasks\\TaskResponseDto.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAmwBgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-14T05:43:01.659Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "TaskService.cs",
+              "DocumentMoniker": "E:\\Company TaskManagementSystem\\TaskManagement.Infrastructure\\Services\\TaskService.cs",
+              "RelativeDocumentMoniker": "TaskManagement.Infrastructure\\Services\\TaskService.cs",
+              "ToolTip": "E:\\Company TaskManagementSystem\\TaskManagement.Infrastructure\\Services\\TaskService.cs",
+              "RelativeToolTip": "TaskManagement.Infrastructure\\Services\\TaskService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-14T05:41:59.783Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "TasksController.cs",
+              "DocumentMoniker": "E:\\Company TaskManagementSystem\\TaskManagement.API\\Controllers\\TasksController.cs",
+              "RelativeDocumentMoniker": "TaskManagement.API\\Controllers\\TasksController.cs",
+              "ToolTip": "E:\\Company TaskManagementSystem\\TaskManagement.API\\Controllers\\TasksController.cs",
+              "RelativeToolTip": "TaskManagement.API\\Controllers\\TasksController.cs",
+              "ViewState": "AgIAAG8AAAAAAAAAAAAgwIUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-14T05:18:52.294Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "E:\\Company TaskManagementSystem\\TaskManagement.API\\appsettings.json",
+              "RelativeDocumentMoniker": "TaskManagement.API\\appsettings.json",
+              "ToolTip": "E:\\Company TaskManagementSystem\\TaskManagement.API\\appsettings.json",
+              "RelativeToolTip": "TaskManagement.API\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-11-14T05:17:17.632Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "UserRepository.cs",
+              "DocumentMoniker": "E:\\Company TaskManagementSystem\\TaskManagement.Infrastructure\\Repositories\\UserRepository.cs",
+              "RelativeDocumentMoniker": "TaskManagement.Infrastructure\\Repositories\\UserRepository.cs",
+              "ToolTip": "E:\\Company TaskManagementSystem\\TaskManagement.Infrastructure\\Repositories\\UserRepository.cs",
+              "RelativeToolTip": "TaskManagement.Infrastructure\\Repositories\\UserRepository.cs",
+              "ViewState": "AgIAAEEAAAAAAAAAAAAgwFgAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-14T04:27:25.666Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "IUserRepository.cs",
+              "DocumentMoniker": "E:\\Company TaskManagementSystem\\TaskManagement.Domain\\Interfaces\\IRepository\\IUserRepository.cs",
+              "RelativeDocumentMoniker": "TaskManagement.Domain\\Interfaces\\IRepository\\IUserRepository.cs",
+              "ToolTip": "E:\\Company TaskManagementSystem\\TaskManagement.Domain\\Interfaces\\IRepository\\IUserRepository.cs",
+              "RelativeToolTip": "TaskManagement.Domain\\Interfaces\\IRepository\\IUserRepository.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAuwBwAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-14T04:27:03.932Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "E:\\Company TaskManagementSystem\\TaskManagement.API\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "TaskManagement.API\\Controllers\\UserController.cs",
+              "ToolTip": "E:\\Company TaskManagementSystem\\TaskManagement.API\\Controllers\\UserController.cs",
+              "RelativeToolTip": "TaskManagement.API\\Controllers\\UserController.cs",
+              "ViewState": "AgIAAGUAAAAAAAAAAAAowIEAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-14T04:23:13.165Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "UserResponseDto.cs",
+              "DocumentMoniker": "E:\\Company TaskManagementSystem\\TaskManagement.Application\\DTOs\\Auth\\UserResponseDto.cs",
+              "RelativeDocumentMoniker": "TaskManagement.Application\\DTOs\\Auth\\UserResponseDto.cs",
+              "ToolTip": "E:\\Company TaskManagementSystem\\TaskManagement.Application\\DTOs\\Auth\\UserResponseDto.cs",
+              "RelativeToolTip": "TaskManagement.Application\\DTOs\\Auth\\UserResponseDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-14T04:19:44.364Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "IUserService.cs",
+              "DocumentMoniker": "E:\\Company TaskManagementSystem\\TaskManagement.Application\\Interfaces\\IServices\\IUserService.cs",
+              "RelativeDocumentMoniker": "TaskManagement.Application\\Interfaces\\IServices\\IUserService.cs",
+              "ToolTip": "E:\\Company TaskManagementSystem\\TaskManagement.Application\\Interfaces\\IServices\\IUserService.cs",
+              "RelativeToolTip": "TaskManagement.Application\\Interfaces\\IServices\\IUserService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-14T04:17:00.96Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\Company TaskManagementSystem\\TaskManagement.API\\Program.cs",
+              "RelativeDocumentMoniker": "TaskManagement.API\\Program.cs",
+              "ToolTip": "E:\\Company TaskManagementSystem\\TaskManagement.API\\Program.cs",
+              "RelativeToolTip": "TaskManagement.API\\Program.cs",
+              "ViewState": "AgIAAOkAAAAAAAAAAAAswAcBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-14T05:00:58.584Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "E:\\Company TaskManagementSystem\\TaskManagement.Infrastructure\\Services\\UserService.cs",
+              "RelativeDocumentMoniker": "TaskManagement.Infrastructure\\Services\\UserService.cs",
+              "ToolTip": "E:\\Company TaskManagementSystem\\TaskManagement.Infrastructure\\Services\\UserService.cs",
+              "RelativeToolTip": "TaskManagement.Infrastructure\\Services\\UserService.cs",
+              "ViewState": "AgIAAHMAAAAAAAAAAAAAAH4AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-14T04:19:16.823Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
