@@ -189,11 +189,12 @@ The backend follows a layered architecture:
 ### Admin Dashboard
 ![Admin Dashboard](screenshots/admin-dashboard.png)
 
+### Employee Dashboard
+![Employee Dashboard](screenshots/Employee-dashboard.png)
+
 ### Task List
 ![Task List](screenshots/task-list.png)
 
-### Employee Dashboard
-![Employee Dashboard](screenshots/Employee-dashboard.png)
 
 ## Future Improvements
 
