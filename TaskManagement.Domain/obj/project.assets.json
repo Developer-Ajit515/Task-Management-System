@@ -4022,11 +4022,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Company TaskManagementSystem\\TaskManagement.Domain\\TaskManagement.Domain.csproj",
+      "projectUniqueName": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Domain\\TaskManagement.Domain.csproj",
       "projectName": "TaskManagement.Domain",
-      "projectPath": "E:\\Company TaskManagementSystem\\TaskManagement.Domain\\TaskManagement.Domain.csproj",
+      "projectPath": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Domain\\TaskManagement.Domain.csproj",
       "packagesPath": "C:\\Users\\Ajit Singh\\.nuget\\packages\\",
-      "outputPath": "E:\\Company TaskManagementSystem\\TaskManagement.Domain\\obj\\",
+      "outputPath": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

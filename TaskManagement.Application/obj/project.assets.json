@@ -2750,11 +2750,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Company TaskManagementSystem\\TaskManagement.Application\\TaskManagement.Application.csproj",
+      "projectUniqueName": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Application\\TaskManagement.Application.csproj",
       "projectName": "TaskManagement.Application",
-      "projectPath": "E:\\Company TaskManagementSystem\\TaskManagement.Application\\TaskManagement.Application.csproj",
+      "projectPath": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Application\\TaskManagement.Application.csproj",
       "packagesPath": "C:\\Users\\Ajit Singh\\.nuget\\packages\\",
-      "outputPath": "E:\\Company TaskManagementSystem\\TaskManagement.Application\\obj\\",
+      "outputPath": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Application\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -2778,8 +2778,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "E:\\Company TaskManagementSystem\\TaskManagement.Domain\\TaskManagement.Domain.csproj": {
-              "projectPath": "E:\\Company TaskManagementSystem\\TaskManagement.Domain\\TaskManagement.Domain.csproj"
+            "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Domain\\TaskManagement.Domain.csproj": {
+              "projectPath": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Domain\\TaskManagement.Domain.csproj"
             }
           }
         }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "3UFwDDNHQPM=",
+  "dgSpecHash": "ivDzVweLRNA=",
   "success": true,
-  "projectFilePath": "E:\\Company TaskManagementSystem\\TaskManagement.Domain\\TaskManagement.Domain.csproj",
+  "projectFilePath": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Domain\\TaskManagement.Domain.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Ajit Singh\\.nuget\\packages\\azure.core\\1.41.0\\azure.core.1.41.0.nupkg.sha512",
     "C:\\Users\\Ajit Singh\\.nuget\\packages\\azure.identity\\1.12.1\\azure.identity.1.12.1.nupkg.sha512",

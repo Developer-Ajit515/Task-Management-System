@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Company TaskManagementSystem\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj": {}
+    "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj": {}
   },
   "projects": {
-    "E:\\Company TaskManagementSystem\\TaskManagement.Application\\TaskManagement.Application.csproj": {
+    "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Application\\TaskManagement.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Company TaskManagementSystem\\TaskManagement.Application\\TaskManagement.Application.csproj",
+        "projectUniqueName": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Application\\TaskManagement.Application.csproj",
         "projectName": "TaskManagement.Application",
-        "projectPath": "E:\\Company TaskManagementSystem\\TaskManagement.Application\\TaskManagement.Application.csproj",
+        "projectPath": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Application\\TaskManagement.Application.csproj",
         "packagesPath": "C:\\Users\\Ajit Singh\\.nuget\\packages\\",
-        "outputPath": "E:\\Company TaskManagementSystem\\TaskManagement.Application\\obj\\",
+        "outputPath": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -35,8 +35,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "E:\\Company TaskManagementSystem\\TaskManagement.Domain\\TaskManagement.Domain.csproj": {
-                "projectPath": "E:\\Company TaskManagementSystem\\TaskManagement.Domain\\TaskManagement.Domain.csproj"
+              "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Domain\\TaskManagement.Domain.csproj": {
+                "projectPath": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Domain\\TaskManagement.Domain.csproj"
               }
             }
           }
@@ -82,14 +82,14 @@
         }
       }
     },
-    "E:\\Company TaskManagementSystem\\TaskManagement.Domain\\TaskManagement.Domain.csproj": {
+    "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Domain\\TaskManagement.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Company TaskManagementSystem\\TaskManagement.Domain\\TaskManagement.Domain.csproj",
+        "projectUniqueName": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Domain\\TaskManagement.Domain.csproj",
         "projectName": "TaskManagement.Domain",
-        "projectPath": "E:\\Company TaskManagementSystem\\TaskManagement.Domain\\TaskManagement.Domain.csproj",
+        "projectPath": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Domain\\TaskManagement.Domain.csproj",
         "packagesPath": "C:\\Users\\Ajit Singh\\.nuget\\packages\\",
-        "outputPath": "E:\\Company TaskManagementSystem\\TaskManagement.Domain\\obj\\",
+        "outputPath": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -170,14 +170,14 @@
         }
       }
     },
-    "E:\\Company TaskManagementSystem\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj": {
+    "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Company TaskManagementSystem\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj",
+        "projectUniqueName": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj",
         "projectName": "TaskManagement.Infrastructure",
-        "projectPath": "E:\\Company TaskManagementSystem\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj",
+        "projectPath": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\Ajit Singh\\.nuget\\packages\\",
-        "outputPath": "E:\\Company TaskManagementSystem\\TaskManagement.Infrastructure\\obj\\",
+        "outputPath": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -201,11 +201,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "E:\\Company TaskManagementSystem\\TaskManagement.Application\\TaskManagement.Application.csproj": {
-                "projectPath": "E:\\Company TaskManagementSystem\\TaskManagement.Application\\TaskManagement.Application.csproj"
+              "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Application\\TaskManagement.Application.csproj": {
+                "projectPath": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Application\\TaskManagement.Application.csproj"
               },
-              "E:\\Company TaskManagementSystem\\TaskManagement.Domain\\TaskManagement.Domain.csproj": {
-                "projectPath": "E:\\Company TaskManagementSystem\\TaskManagement.Domain\\TaskManagement.Domain.csproj"
+              "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Domain\\TaskManagement.Domain.csproj": {
+                "projectPath": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Domain\\TaskManagement.Domain.csproj"
               }
             }
           }

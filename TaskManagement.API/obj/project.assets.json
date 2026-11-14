@@ -4159,11 +4159,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Company TaskManagementSystem\\TaskManagement.API\\TaskManagement.API.csproj",
+      "projectUniqueName": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.API\\TaskManagement.API.csproj",
       "projectName": "TaskManagement.API",
-      "projectPath": "E:\\Company TaskManagementSystem\\TaskManagement.API\\TaskManagement.API.csproj",
+      "projectPath": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.API\\TaskManagement.API.csproj",
       "packagesPath": "C:\\Users\\Ajit Singh\\.nuget\\packages\\",
-      "outputPath": "E:\\Company TaskManagementSystem\\TaskManagement.API\\obj\\",
+      "outputPath": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -4187,11 +4187,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "E:\\Company TaskManagementSystem\\TaskManagement.Application\\TaskManagement.Application.csproj": {
-              "projectPath": "E:\\Company TaskManagementSystem\\TaskManagement.Application\\TaskManagement.Application.csproj"
+            "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Application\\TaskManagement.Application.csproj": {
+              "projectPath": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Application\\TaskManagement.Application.csproj"
             },
-            "E:\\Company TaskManagementSystem\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj": {
-              "projectPath": "E:\\Company TaskManagementSystem\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj"
+            "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj": {
+              "projectPath": "E:\\Company TaskManagementSystem\\Task-Management-System\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj"
             }
           }
         }
