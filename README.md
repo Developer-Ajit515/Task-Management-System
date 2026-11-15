@@ -208,3 +208,4 @@ The backend follows a layered architecture:
 **Ajit Singh**
 
 GitHub: https://github.com/Developer-Ajit515
+LinkedIn: https://www.linkedin.com/in/ajit-singh-62836b158/
