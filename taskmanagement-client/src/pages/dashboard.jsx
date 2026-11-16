@@ -1,105 +1,225 @@
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import dashboardService from "../services/dashboardService";
 import "./Auth.css";
 
-const stats = [
-  {
-    title: "Total Tasks",
-    value: 120,
-    change: "+12%",
-    icon: "▤",
-    color: "blue",
-  },
-  {
-    title: "Completed Tasks",
-    value: 78,
-    change: "+8%",
-    icon: "✓",
-    color: "green",
-  },
-  {
-    title: "Pending Tasks",
-    value: 25,
-    change: "12 awaiting",
-    icon: "◷",
-    color: "orange",
-  },
-  {
-    title: "In Progress",
-    value: 17,
-    change: "Active work",
-    icon: "↗",
-    color: "purple",
-  },
-];
+// Priority mapping
+const getPriorityName = (priority) => {
+  const priorities = {
+    1: "Low",
+    2: "Medium",
+    3: "High",
+  };
 
-const weeklyData = [
-  { day: "Mon", completed: 35, pending: 15 },
-  { day: "Tue", completed: 50, pending: 20 },
-  { day: "Wed", completed: 40, pending: 25 },
-  { day: "Thu", completed: 65, pending: 15 },
-  { day: "Fri", completed: 55, pending: 30 },
-  { day: "Sat", completed: 80, pending: 20 },
-  { day: "Sun", completed: 45, pending: 10 },
-];
+  return priorities[priority] || "Unknown";
+};
 
-const recentTasks = [
-  {
-    id: 1,
-    title: "Create Login API",
-    employee: "John Smith",
-    priority: "High",
-    status: "Completed",
-  },
-  {
-    id: 2,
-    title: "Dashboard UI Design",
-    employee: "Sarah Wilson",
-    priority: "Medium",
-    status: "In Progress",
-  },
-  {
-    id: 3,
-    title: "Database Integration",
-    employee: "David Brown",
-    priority: "High",
-    status: "Pending",
-  },
-  {
-    id: 4,
-    title: "Employee Management",
-    employee: "Robert Taylor",
-    priority: "Low",
-    status: "Completed",
-  },
-  {
-    id: 5,
-    title: "Testing APIs",
-    employee: "Emma Davis",
-    priority: "Medium",
-    status: "In Progress",
-  },
-];
+// Status mapping
+const getStatusName = (status) => {
+  const statuses = {
+    1: "Pending",
+    2: "In Progress",
+    3: "Completed",
+  };
+
+  return statuses[status] || "Unknown";
+};
 
 function Dashboard() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const { user, logout } = useAuth();
+
+  // Logged-in user information
+  const userName = user?.fullName || "User";
+
+  const roles = Array.isArray(user?.roles) ? user.roles : [];
+
+  const isAdmin = roles.some(
+    (role) => role?.toLowerCase() === "admin"
+  );
+
+  const userRole = isAdmin ? "Administrator" : "Employee";
+
+  // Dashboard states
+  const [dashboardData, setDashboardData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  // Sidebar links
   const sidebarLinks = [
-    { title: "Dashboard", link: "/dashboard", icon: "⌂" },
-    { title: "Create Task", link: "/create-task", icon: "＋" },
-    { title: "Manage Tasks", link: "/tasks", icon: "✓" },
-    { title: "Create Employee", link: "/create-employee", icon: "♙" },
-    { title: "Manage Users", link: "/users", icon: "♧" },
+    {
+      title: "Dashboard",
+      link: "/dashboard",
+      icon: "⌂",
+      adminOnly: false,
+    },
+    {
+      title: "Create Task",
+      link: "/create-task",
+      icon: "＋",
+      adminOnly: true,
+    },
+    {
+      title: "Manage Tasks",
+      link: "/tasks",
+      icon: "✓",
+      adminOnly: false,
+    },
+    {
+      title: "Create Employee",
+      link: "/create-employee",
+      icon: "♙",
+      adminOnly: true,
+    },
+    {
+      title: "Manage Users",
+      link: "/users",
+      icon: "♧",
+      adminOnly: true,
+    },
   ];
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("user");
+  // Show links according to role
+  const visibleSidebarLinks = sidebarLinks.filter(
+    (item) => !item.adminOnly || isAdmin
+  );
 
+  // Fetch dashboard data
+  const fetchDashboard = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const data = await dashboardService.getDashboardSummary();
+
+      setDashboardData(data);
+    } catch (err) {
+      console.error("Dashboard Error:", err);
+
+      setError(
+        err.response?.data?.message ||
+          "Unable to load dashboard data."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDashboard();
+  }, []);
+
+  // Logout
+  const handleLogout = () => {
+    logout();
     navigate("/login", { replace: true });
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="dashboard-loading">
+        Loading dashboard...
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="dashboard-error">
+        <h3>Dashboard Error</h3>
+        <p>{error}</p>
+
+        <button onClick={fetchDashboard}>
+          Retry
+        </button>
+
+        <button onClick={handleLogout}>
+          Logout
+        </button>
+      </div>
+    );
+  }
+
+  if (!dashboardData) {
+    return (
+      <div className="dashboard-loading">
+        No dashboard data available.
+      </div>
+    );
+  }
+
+  // Dynamic statistics
+  const stats = [
+    {
+      title: "Total Tasks",
+      value: dashboardData.totalTasks ?? 0,
+      change: "All tasks",
+      icon: "▤",
+      color: "blue",
+    },
+    {
+      title: "Completed Tasks",
+      value: dashboardData.completedTasks ?? 0,
+      change: "Completed",
+      icon: "✓",
+      color: "green",
+    },
+    {
+      title: "Pending Tasks",
+      value: dashboardData.pendingTasks ?? 0,
+      change: "Awaiting action",
+      icon: "◷",
+      color: "orange",
+    },
+    {
+      title: "In Progress",
+      value: dashboardData.inProgressTasks ?? 0,
+      change: "Active work",
+      icon: "↗",
+      color: "purple",
+    },
+  ];
+
+  // Weekly activity
+  const weeklyData = dashboardData.weeklyActivity || [];
+
+  // Recent tasks
+  const recentTasks = dashboardData.recentTasks || [];
+
+  // Task percentages
+  const total = dashboardData.totalTasks || 0;
+
+  const getPercentage = (value) => {
+    if (total === 0) return 0;
+
+    return Math.round(((value || 0) / total) * 100);
+  };
+
+  const completedPercentage = getPercentage(
+    dashboardData.completedTasks
+  );
+
+  const pendingPercentage = getPercentage(
+    dashboardData.pendingTasks
+  );
+
+  const inProgressPercentage = getPercentage(
+    dashboardData.inProgressTasks
+  );
+
+  // Weekly chart scaling
+  const maxWeeklyValue = Math.max(
+    1,
+    ...weeklyData.map((item) =>
+      Math.max(item.completed || 0, item.pending || 0)
+    )
+  );
 
   return (
     <div className="app-layout">
@@ -107,44 +227,62 @@ function Dashboard() {
       {/* Sidebar */}
       <aside className="app-sidebar">
 
+        {/* Brand */}
         <div className="sidebar-brand">
           <div className="brand-icon">T</div>
+
           <div>
             <h2>TaskFlow</h2>
             <span>Management System</span>
           </div>
         </div>
 
+        {/* Sidebar Menu */}
         <div className="sidebar-menu">
-          <p className="sidebar-heading">MAIN MENU</p>
 
-          {sidebarLinks.map((item) => (
+          <p className="sidebar-heading">
+            MAIN MENU
+          </p>
+
+          {visibleSidebarLinks.map((item) => (
             <Link
               key={item.link}
               to={item.link}
               className={`sidebar-link ${
-                location.pathname.toLowerCase() === item.link
+                location.pathname.toLowerCase() ===
+                item.link.toLowerCase()
                   ? "active"
                   : ""
               }`}
             >
-              <span className="sidebar-link-icon">{item.icon}</span>
+              <span className="sidebar-link-icon">
+                {item.icon}
+              </span>
+
               <span>{item.title}</span>
             </Link>
           ))}
+
         </div>
 
         {/* Sidebar Bottom */}
         <div className="sidebar-bottom">
 
+          {/* Logged-in User */}
           <div className="sidebar-user">
-            <div className="sidebar-user-icon">A</div>
-            <div>
-              <strong>Administrator</strong>
-              <span>System Admin</span>
+
+            <div className="sidebar-user-icon">
+              {userName.charAt(0).toUpperCase()}
             </div>
+
+            <div className="sidebar-user-info">
+              <strong>{userName}</strong>
+              <span>{userRole}</span>
+            </div>
+
           </div>
 
+          {/* Logout */}
           <button
             className="sidebar-logout"
             onClick={handleLogout}
@@ -162,32 +300,43 @@ function Dashboard() {
 
         {/* Navbar */}
         <header className="app-navbar">
+
           <div>
             <h3>Dashboard Overview</h3>
-            <span>Welcome back, Administrator!</span>
+
+            <span>
+              Welcome back, {userName}!
+            </span>
           </div>
 
           <div className="navbar-right">
+
             <span className="navbar-status">
               <span className="status-dot"></span>
               System Active
             </span>
+
           </div>
+
         </header>
 
         <div className="dashboard-container">
 
           {/* Page Heading */}
           <div className="dashboard-header">
+
             <div>
               <span className="dashboard-eyebrow">
                 OVERVIEW
               </span>
+
               <h2>Dashboard</h2>
+
               <p>
                 Monitor your team's performance and task activities.
               </p>
             </div>
+
           </div>
 
           {/* Statistics Cards */}
@@ -218,23 +367,30 @@ function Dashboard() {
             <div className="dashboard-panel weekly-panel">
 
               <div className="panel-header">
+
                 <div>
                   <h3>Task Activity</h3>
                   <p>Weekly task performance</p>
                 </div>
 
-                <span className="panel-period">This Week</span>
+                <span className="panel-period">
+                  This Week
+                </span>
+
               </div>
 
               <div className="chart-legend">
+
                 <span>
                   <i className="legend-completed"></i>
                   Completed
                 </span>
+
                 <span>
                   <i className="legend-pending"></i>
                   Pending
                 </span>
+
               </div>
 
               <div className="bar-chart">
@@ -246,14 +402,26 @@ function Dashboard() {
 
                       <div
                         className="bar completed-bar"
-                        style={{ height: `${item.completed}%` }}
-                        title={`Completed: ${item.completed}`}
+                        style={{
+                          height: `${
+                            ((item.completed || 0) /
+                              maxWeeklyValue) *
+                            100
+                          }%`,
+                        }}
+                        title={`Completed: ${item.completed || 0}`}
                       ></div>
 
                       <div
                         className="bar pending-bar"
-                        style={{ height: `${item.pending}%` }}
-                        title={`Pending: ${item.pending}`}
+                        style={{
+                          height: `${
+                            ((item.pending || 0) /
+                              maxWeeklyValue) *
+                            100
+                          }%`,
+                        }}
+                        title={`Pending: ${item.pending || 0}`}
                       ></div>
 
                     </div>
@@ -271,48 +439,74 @@ function Dashboard() {
             <div className="dashboard-panel progress-panel">
 
               <div className="panel-header">
+
                 <div>
                   <h3>Task Statistics</h3>
                   <p>Overall task distribution</p>
                 </div>
+
               </div>
 
               <div className="progress-total">
-                <h2>120</h2>
+                <h2>{total}</h2>
                 <span>Total Tasks</span>
               </div>
 
+              {/* Completed */}
               <div className="progress-item">
+
                 <div>
                   <span>Completed</span>
-                  <strong>65%</strong>
+                  <strong>{completedPercentage}%</strong>
                 </div>
+
                 <div className="progress-track">
-                  <div className="progress-fill completed-fill"
-                    style={{ width: "65%" }}></div>
+                  <div
+                    className="progress-fill completed-fill"
+                    style={{
+                      width: `${completedPercentage}%`,
+                    }}
+                  ></div>
                 </div>
+
               </div>
 
+              {/* Pending */}
               <div className="progress-item">
+
                 <div>
                   <span>Pending</span>
-                  <strong>21%</strong>
+                  <strong>{pendingPercentage}%</strong>
                 </div>
+
                 <div className="progress-track">
-                  <div className="progress-fill pending-fill"
-                    style={{ width: "21%" }}></div>
+                  <div
+                    className="progress-fill pending-fill"
+                    style={{
+                      width: `${pendingPercentage}%`,
+                    }}
+                  ></div>
                 </div>
+
               </div>
 
+              {/* In Progress */}
               <div className="progress-item">
+
                 <div>
                   <span>In Progress</span>
-                  <strong>14%</strong>
+                  <strong>{inProgressPercentage}%</strong>
                 </div>
+
                 <div className="progress-track">
-                  <div className="progress-fill working-fill"
-                    style={{ width: "14%" }}></div>
+                  <div
+                    className="progress-fill working-fill"
+                    style={{
+                      width: `${inProgressPercentage}%`,
+                    }}
+                  ></div>
                 </div>
+
               </div>
 
             </div>
@@ -323,19 +517,28 @@ function Dashboard() {
           <div className="dashboard-panel recent-panel">
 
             <div className="panel-header">
+
               <div>
                 <h3>Recent Tasks</h3>
-                <p>Latest task activities in your organization.</p>
+
+                <p>
+                  Latest task activities in your organization.
+                </p>
               </div>
 
-              <Link to="/tasks" className="view-all-link">
+              <Link
+                to="/tasks"
+                className="view-all-link"
+              >
                 View All →
               </Link>
+
             </div>
 
             <div className="recent-table-wrapper">
 
               <table className="recent-table">
+
                 <thead>
                   <tr>
                     <th>Task Name</th>
@@ -346,29 +549,67 @@ function Dashboard() {
                 </thead>
 
                 <tbody>
-                  {recentTasks.map((task) => (
-                    <tr key={task.id}>
-                      <td className="task-name">{task.title}</td>
-                      <td>{task.employee}</td>
-                      <td>
-                        <span className={`priority-badge ${task.priority.toLowerCase()}`}>
-                          {task.priority}
-                        </span>
-                      </td>
-                      <td>
-                        <span className={`task-status ${task.status.toLowerCase().replace(" ", "-")}`}>
-                          {task.status}
-                        </span>
+
+                  {recentTasks.length > 0 ? (
+                    recentTasks.map((task) => {
+
+                      const priority = getPriorityName(
+                        task.priority
+                      );
+
+                      const status = getStatusName(
+                        task.status
+                      );
+
+                      return (
+                        <tr key={task.id}>
+
+                          <td className="task-name">
+                            {task.title}
+                          </td>
+
+                          <td>
+                            {task.assignedUserName || "Unassigned"}
+                          </td>
+
+                          <td>
+                            <span
+                              className={`priority-badge ${priority.toLowerCase()}`}
+                            >
+                              {priority}
+                            </span>
+                          </td>
+
+                          <td>
+                            <span
+                              className={`task-status ${status
+                                .toLowerCase()
+                                .replace(" ", "-")}`}
+                            >
+                              {status}
+                            </span>
+                          </td>
+
+                        </tr>
+                      );
+                    })
+                  ) : (
+                    <tr>
+                      <td colSpan="4" className="empty-state">
+                        No recent tasks available.
                       </td>
                     </tr>
-                  ))}
+                  )}
+
                 </tbody>
+
               </table>
 
             </div>
 
           </div>
 
+          {/* Footer */}
           <div className="dashboard-footer">
             <p>Task Management System</p>
             <span>Manage smarter. Work better.</span>
@@ -377,6 +618,7 @@ function Dashboard() {
         </div>
 
       </main>
+
     </div>
   );
 }

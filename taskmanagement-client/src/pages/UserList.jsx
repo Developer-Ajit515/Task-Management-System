@@ -1,13 +1,21 @@
 
-import React, { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Link, Navigate } from "react-router-dom";
 import Swal from "sweetalert2";
+
+import { useAuth } from "../context/AuthContext";
 import UserService from "../services/userService";
+
 import "./UserManagement.css";
 
 function UserList() {
+    const { user } = useAuth();
+
+    const isAdmin = user?.roles?.includes("Admin");
+
     const [users, setUsers] = useState([]);
     const [search, setSearch] = useState("");
+
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
 
@@ -19,14 +27,30 @@ function UserList() {
         email: ""
     });
 
-    const fetchUsers = async () => {
+    // ==========================================
+    // FETCH ALL USERS - ADMIN ONLY
+    // ==========================================
+
+    const fetchUsers = useCallback(async () => {
+        if (!isAdmin) {
+            setUsers([]);
+            setLoading(false);
+            return;
+        }
+
         try {
             setLoading(true);
 
             const response = await UserService.getAll();
 
             setUsers(response.data || []);
+
         } catch (error) {
+            console.error(
+                "Fetch Users Error:",
+                error.response?.data || error
+            );
+
             Swal.fire({
                 icon: "error",
                 title: "Error",
@@ -34,29 +58,53 @@ function UserList() {
                     error.response?.data?.message ||
                     "Unable to load users."
             });
+
+            setUsers([]);
+
         } finally {
             setLoading(false);
         }
-    };
+    }, [isAdmin]);
 
     useEffect(() => {
         fetchUsers();
-    }, []);
+    }, [fetchUsers]);
+
+    // ==========================================
+    // SEARCH AND FILTER USERS
+    // ==========================================
 
     const filteredUsers = useMemo(() => {
         const value = search.toLowerCase().trim();
 
-        if (!value) return users;
+        if (!value) {
+            return users;
+        }
 
-        return users.filter(user =>
-            user.fullName?.toLowerCase().includes(value) ||
-            user.email?.toLowerCase().includes(value) ||
-            user.roles?.some(role =>
-                role.toLowerCase().includes(value)
-            ) ||
-            user.role?.toLowerCase().includes(value)
-        );
+        return users.filter((user) => {
+            const fullName =
+                user.fullName?.toLowerCase() || "";
+
+            const email =
+                user.email?.toLowerCase() || "";
+
+            const roleMatch =
+                user.roles?.some((role) =>
+                    role.toLowerCase().includes(value)
+                ) ||
+                user.role?.toLowerCase().includes(value);
+
+            return (
+                fullName.includes(value) ||
+                email.includes(value) ||
+                roleMatch
+            );
+        });
     }, [users, search]);
+
+    // ==========================================
+    // OPEN EDIT MODAL
+    // ==========================================
 
     const openEditModal = (user) => {
         setSelectedUser(user);
@@ -69,27 +117,70 @@ function UserList() {
         setShowEdit(true);
     };
 
+    // ==========================================
+    // CLOSE EDIT MODAL
+    // ==========================================
+
     const closeEditModal = () => {
+        if (saving) return;
+
         setShowEdit(false);
         setSelectedUser(null);
-    };
 
-    const handleEditChange = (e) => {
         setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
+            fullName: "",
+            email: ""
         });
     };
+
+    // ==========================================
+    // HANDLE FORM INPUT
+    // ==========================================
+
+    const handleEditChange = (e) => {
+        const { name, value } = e.target;
+
+        setFormData((previous) => ({
+            ...previous,
+            [name]: value
+        }));
+    };
+
+    // ==========================================
+    // UPDATE USER
+    // ==========================================
 
     const handleUpdate = async (e) => {
         e.preventDefault();
 
         if (!selectedUser) return;
 
+        if (
+            !formData.fullName.trim() ||
+            !formData.email.trim()
+        ) {
+            Swal.fire({
+                icon: "warning",
+                title: "Validation Error",
+                text: "Name and email are required."
+            });
+
+            return;
+        }
+
         try {
             setSaving(true);
 
-            await UserService.update(selectedUser.id, formData);
+            await UserService.update(
+                selectedUser.id,
+                {
+                    fullName: formData.fullName.trim(),
+                    email: formData.email.trim()
+                }
+            );
+
+            setShowEdit(false);
+            setSelectedUser(null);
 
             await Swal.fire({
                 icon: "success",
@@ -97,9 +188,14 @@ function UserList() {
                 text: "User updated successfully."
             });
 
-            closeEditModal();
             await fetchUsers();
+
         } catch (error) {
+            console.error(
+                "Update User Error:",
+                error.response?.data || error
+            );
+
             Swal.fire({
                 icon: "error",
                 title: "Update Failed",
@@ -107,10 +203,15 @@ function UserList() {
                     error.response?.data?.message ||
                     "Unable to update user."
             });
+
         } finally {
             setSaving(false);
         }
     };
+
+    // ==========================================
+    // DEACTIVATE USER
+    // ==========================================
 
     const handleDeactivate = async (user) => {
         const result = await Swal.fire({
@@ -135,7 +236,13 @@ function UserList() {
             });
 
             await fetchUsers();
+
         } catch (error) {
+            console.error(
+                "Deactivate User Error:",
+                error.response?.data || error
+            );
+
             Swal.fire({
                 icon: "error",
                 title: "Error",
@@ -146,6 +253,10 @@ function UserList() {
         }
     };
 
+    // ==========================================
+    // GET USER ROLES
+    // ==========================================
+
     const getRoles = (user) => {
         if (user.roles?.length) {
             return user.roles.join(", ");
@@ -154,9 +265,24 @@ function UserList() {
         return user.role || "No Role";
     };
 
+    // ==========================================
+    // ROLE PROTECTION
+    // ==========================================
+
+    if (!isAdmin) {
+        return <Navigate to="/dashboard" replace />;
+    }
+
+    // ==========================================
+    // UI
+    // ==========================================
+
     return (
         <div className="user-page">
+
+            {/* Header */}
             <div className="user-page-header">
+
                 <div>
                     <h2>Manage Users</h2>
                     <p>View and manage user accounts.</p>
@@ -168,9 +294,12 @@ function UserList() {
                 >
                     + Create Employee
                 </Link>
+
             </div>
 
+            {/* User Statistics */}
             <div className="user-stats">
+
                 <div className="user-stat-card">
                     <span>Total Users</span>
                     <strong>{users.length}</strong>
@@ -179,20 +308,28 @@ function UserList() {
                 <div className="user-stat-card">
                     <span>Active Users</span>
                     <strong>
-                        {users.filter(user => user.isActive).length}
+                        {users.filter(
+                            (user) => user.isActive
+                        ).length}
                     </strong>
                 </div>
 
                 <div className="user-stat-card">
                     <span>Inactive Users</span>
                     <strong>
-                        {users.filter(user => !user.isActive).length}
+                        {users.filter(
+                            (user) => !user.isActive
+                        ).length}
                     </strong>
                 </div>
+
             </div>
 
+            {/* Users Table */}
             <div className="user-table-card">
+
                 <div className="user-table-toolbar">
+
                     <h3>Users List</h3>
 
                     <input
@@ -200,8 +337,11 @@ function UserList() {
                         className="user-search"
                         placeholder="Search name, email or role..."
                         value={search}
-                        onChange={(e) => setSearch(e.target.value)}
+                        onChange={(e) =>
+                            setSearch(e.target.value)
+                        }
                     />
+
                 </div>
 
                 {loading ? (
@@ -210,7 +350,9 @@ function UserList() {
                     </div>
                 ) : (
                     <div className="user-table-wrapper">
+
                         <table className="user-table">
+
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -224,9 +366,12 @@ function UserList() {
                             </thead>
 
                             <tbody>
+
                                 {filteredUsers.length > 0 ? (
-                                    filteredUsers.map(user => (
+                                    filteredUsers.map((user) => (
+
                                         <tr key={user.id}>
+
                                             <td>{user.id}</td>
 
                                             <td className="user-name-cell">
@@ -235,16 +380,18 @@ function UserList() {
 
                                             <td>{user.email}</td>
 
-                                            <td>{getRoles(user)}</td>
+                                            <td>
+                                                {getRoles(user)}
+                                            </td>
 
                                             <td>
-                                                <span className={
-                                                    `user-status ${
+                                                <span
+                                                    className={`user-status ${
                                                         user.isActive
                                                             ? "active"
                                                             : "inactive"
-                                                    }`
-                                                }>
+                                                    }`}
+                                                >
                                                     {user.isActive
                                                         ? "Active"
                                                         : "Inactive"}
@@ -261,6 +408,7 @@ function UserList() {
 
                                             <td>
                                                 <div className="user-actions">
+
                                                     <button
                                                         type="button"
                                                         className="user-edit-btn"
@@ -282,9 +430,12 @@ function UserList() {
                                                             Deactivate
                                                         </button>
                                                     )}
+
                                                 </div>
                                             </td>
+
                                         </tr>
+
                                     ))
                                 ) : (
                                     <tr>
@@ -296,37 +447,53 @@ function UserList() {
                                         </td>
                                     </tr>
                                 )}
+
                             </tbody>
+
                         </table>
+
                     </div>
                 )}
+
             </div>
 
+            {/* Edit User Modal */}
             {showEdit && (
                 <div
                     className="user-modal-overlay"
                     onClick={closeEditModal}
                 >
+
                     <div
                         className="user-modal"
                         onClick={(e) => e.stopPropagation()}
                     >
+
                         <div className="user-modal-header">
+
                             <h3>Edit User</h3>
 
                             <button
                                 type="button"
                                 onClick={closeEditModal}
                                 className="user-modal-close"
+                                disabled={saving}
                             >
                                 ×
                             </button>
+
                         </div>
 
                         <form onSubmit={handleUpdate}>
+
                             <div className="user-form-group">
-                                <label>Full Name</label>
+
+                                <label htmlFor="fullName">
+                                    Full Name
+                                </label>
+
                                 <input
+                                    id="fullName"
                                     type="text"
                                     name="fullName"
                                     value={formData.fullName}
@@ -334,40 +501,56 @@ function UserList() {
                                     maxLength={100}
                                     required
                                 />
+
                             </div>
 
                             <div className="user-form-group">
-                                <label>Email</label>
+
+                                <label htmlFor="email">
+                                    Email
+                                </label>
+
                                 <input
+                                    id="email"
                                     type="email"
                                     name="email"
                                     value={formData.email}
                                     onChange={handleEditChange}
                                     required
                                 />
+
                             </div>
 
                             <div className="user-form-actions">
+
                                 <button
                                     type="submit"
                                     className="user-primary-btn"
                                     disabled={saving}
                                 >
-                                    {saving ? "Updating..." : "Update User"}
+                                    {saving
+                                        ? "Updating..."
+                                        : "Update User"}
                                 </button>
 
                                 <button
                                     type="button"
                                     className="user-cancel-btn"
                                     onClick={closeEditModal}
+                                    disabled={saving}
                                 >
                                     Cancel
                                 </button>
+
                             </div>
+
                         </form>
+
                     </div>
+
                 </div>
             )}
+
         </div>
     );
 }

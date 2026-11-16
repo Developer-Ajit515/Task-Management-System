@@ -1,13 +1,17 @@
 
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 import axiosInstance from "../api/axiosInstance";
-import "./TaskPages.css";
+import  "./EditTask.css";
 
 function EditTask() {
     const { id } = useParams();
+    const navigate = useNavigate();
 
-    const [formData, setFormData] = useState({
+    const [employees, setEmployees] = useState([]);
+
+    const [form, setForm] = useState({
         title: "",
         description: "",
         priority: 2,
@@ -15,150 +19,167 @@ function EditTask() {
     });
 
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+    const [saving, setSaving] = useState(false);
 
+    // Load task and employees
     useEffect(() => {
-        const fetchTask = async () => {
+        const loadData = async () => {
             try {
                 setLoading(true);
-                setError("");
 
-                const response = await axiosInstance.get(`/Tasks/${id}`);
+                const [taskResponse, employeeResponse] = await Promise.all([
+    axiosInstance.get(`/Tasks/${id}`),
+    axiosInstance.get("/User/employees")
+]);
 
-                const task = response.data;
+const task = taskResponse.data?.data ?? taskResponse.data;
+const employees = employeeResponse.data?.data ?? [];
 
-                setFormData({
-                    title: task.title || "",
-                    description: task.description || "",
-                    priority: task.priority ?? 2,
-                    assignedUserId: task.assignedUserId ?? ""
-                });
+setForm({
+    title: task.title ?? "",
+    description: task.description ?? "",
+    priority: task.priority ?? 2,
+    assignedUserId: task.assignedUserId ?? ""
+});
 
-            } catch (err) {
-                console.error("Edit Task Fetch Error:", err.response?.data || err);
+setEmployees(employees);
 
-                setError(
-                    err.response?.data?.message ||
-                    "Unable to load task."
+                setEmployees(
+                    Array.isArray(employeeList) ? employeeList : []
                 );
+
+            } catch (error) {
+                console.error("Load Task Error:", error);
+                
+                Swal.fire(
+                    "Error",
+                    error.response?.data?.message ||
+                    "Unable to load task details.",
+                    "error"
+                );
+
+                navigate("/tasks");
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchTask();
-    }, [id]);
+        loadData();
+    }, [id, navigate]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        setFormData((previous) => ({
+        setForm(previous => ({
             ...previous,
-            [name]: name === "priority"
-                ? Number(value)
-                : value
+            [name]: value
         }));
     };
 
-    if (loading) {
-        return <div className="task-page-message">Loading task...</div>;
-    }
+    // Update task
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    if (error) {
-        return (
-            <div className="task-page-container">
-                <div className="task-page-error">{error}</div>
-                <Link to="/Tasks" className="task-back-btn">
-                    Back to Tasks
-                </Link>
-            </div>
-        );
+        if (!form.title.trim()) {
+            Swal.fire("Validation", "Title is required.", "warning");
+            return;
+        }
+
+        try {
+            setSaving(true);
+
+            await axiosInstance.put(`/Tasks/${id}`, {
+                title: form.title.trim(),
+                description: form.description.trim(),
+                priority: Number(form.priority),
+                assignedUserId: form.assignedUserId
+                    ? Number(form.assignedUserId)
+                    : null
+            });
+
+            await Swal.fire(
+                "Updated!",
+                "Task updated successfully.",
+                "success"
+            );
+
+            navigate("/tasks");
+
+        } catch (error) {
+            console.error("Update Task Error:", error);
+
+            Swal.fire(
+                "Error",
+                error.response?.data?.message ||
+                "Unable to update task.",
+                "error"
+            );
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    if (loading) {
+        return <p>Loading task...</p>;
     }
 
     return (
-        <div className="task-page-container">
+        <div className="edit-task-page">
+            <h2>Edit Task</h2>
 
-            <div className="task-page-header">
-                <div>
-                    <h2>Edit Task</h2>
-                    <p>Task ID: {id}</p>
-                </div>
+            <form onSubmit={handleSubmit}>
+                <label>Task Title</label>
+                <input
+                    name="title"
+                    value={form.title}
+                    onChange={handleChange}
+                    required
+                />
 
-                <Link to="/Tasks" className="task-back-btn">
-                    Back to Tasks
-                </Link>
-            </div>
+                <label>Description</label>
+                <textarea
+                    name="description"
+                    value={form.description}
+                    onChange={handleChange}
+                />
 
-            <div className="task-form-card">
+                <label>Priority</label>
+                <select
+                    name="priority"
+                    value={form.priority}
+                    onChange={handleChange}
+                >
+                    <option value="1">Low</option>
+                    <option value="2">Medium</option>
+                    <option value="3">High</option>
+                </select>
 
-                <form onSubmit={(e) => e.preventDefault()}>
+                <label>Assign Employee</label>
+               <select
+    name="assignedUserId"
+    value={form.assignedUserId}
+    onChange={handleChange}
+>
+    <option value="">Unassigned</option>
 
-                    <div className="task-form-group">
-                        <label>Task Title</label>
+    {employees.map(employee => (
+        <option key={employee.id} value={employee.id}>
+            {employee.fullName}
+        </option>
+    ))}
+</select>
 
-                        <input
-                            type="text"
-                            name="title"
-                            value={formData.title}
-                            onChange={handleChange}
-                            placeholder="Enter task title"
-                        />
-                    </div>
+                <button type="submit" disabled={saving}>
+                    {saving ? "Updating..." : "Update Task"}
+                </button>
 
-                    <div className="task-form-group">
-                        <label>Description</label>
-
-                        <textarea
-                            name="description"
-                            value={formData.description}
-                            onChange={handleChange}
-                            placeholder="Enter task description"
-                            rows="5"
-                        />
-                    </div>
-
-                    <div className="task-form-group">
-                        <label>Priority</label>
-
-                        <select
-                            name="priority"
-                            value={formData.priority}
-                            onChange={handleChange}
-                        >
-                            <option value={1}>Low</option>
-                            <option value={2}>Medium</option>
-                            <option value={3}>High</option>
-                        </select>
-                    </div>
-
-                    <div className="task-form-group">
-                        <label>Assigned User ID</label>
-
-                        <input
-                            type="number"
-                            name="assignedUserId"
-                            value={formData.assignedUserId}
-                            onChange={handleChange}
-                            placeholder="Enter assigned user ID"
-                        />
-                    </div>
-
-                    <div className="task-form-actions">
-                        <Link to="/Tasks" className="task-cancel-btn">
-                            Cancel
-                        </Link>
-
-                        <button
-                            type="button"
-                            className="task-save-btn"
-                            disabled
-                        >
-                            Update (Coming Soon)
-                        </button>
-                    </div>
-
-                </form>
-            </div>
+                <button
+                    type="button"
+                    onClick={() => navigate("/tasks")}
+                >
+                    Cancel
+                </button>
+            </form>
         </div>
     );
 }

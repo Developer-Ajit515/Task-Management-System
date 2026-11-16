@@ -80,6 +80,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "TaskManagement.API.Controllers.DashboardController",
+    "Method": "GetDashboardSummary",
+    "RelativePath": "api/Dashboard/summary",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "TaskManagement.API.Controllers.RoleController",
     "Method": "GetAll",
     "RelativePath": "api/Role",
@@ -284,6 +294,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "TaskManagement.API.Controllers.TasksController",
+    "Method": "GetMyTaskById",
+    "RelativePath": "api/Tasks/my-tasks/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "TaskManagement.API.Controllers.UserController",
     "Method": "GetAll",
     "RelativePath": "api/User",
@@ -344,6 +370,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TaskManagement.API.Controllers.UserController",
+    "Method": "GetActiveEmployees",
+    "RelativePath": "api/User/employees",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {

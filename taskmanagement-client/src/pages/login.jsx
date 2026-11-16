@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import "./login.css";
 
 function Login() {
+
     const navigate = useNavigate();
     const { login } = useAuth();
 
@@ -24,18 +25,36 @@ function Login() {
     };
 
     const handleSubmit = async (e) => {
+
         e.preventDefault();
+
         setError("");
         setLoading(true);
 
         try {
-            await login(formData);
-            navigate("/dashboard");
+
+           const authData = await login(formData);
+          const roles = authData.roles || [];
+
+      if (roles.includes("Admin")) {
+           navigate("/admin-dashboard");
+    } else if (roles.includes("Employee")) {
+             navigate("/dashboard");
+  } else {
+        navigate("/dashboard");
+   }
+
         } catch (err) {
+
+            console.error("Login failed:", err);
+
             setError(
                 err.response?.data?.message ||
+                err.response?.data?.errors?.[0] ||
+                err.message ||
                 "Invalid email or password."
             );
+
         } finally {
             setLoading(false);
         }
@@ -61,6 +80,7 @@ function Login() {
 
                     <div className="login-field">
                         <label>Email Address</label>
+
                         <input
                             type="email"
                             name="email"
@@ -73,6 +93,7 @@ function Login() {
 
                     <div className="login-field">
                         <label>Password</label>
+
                         <input
                             type="password"
                             name="password"
@@ -99,6 +120,7 @@ function Login() {
                 </div>
 
             </div>
+
         </div>
     );
 }

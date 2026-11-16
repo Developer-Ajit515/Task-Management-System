@@ -161,6 +161,18 @@
         }
       }
     },
+    "/api/Dashboard/summary": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Role": {
       "get": {
         "tags": [
@@ -438,6 +450,29 @@
         }
       }
     },
+    "/api/Tasks/my-tasks/{id}": {
+      "get": {
+        "tags": [
+          "Tasks"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Tasks/{id}/status": {
       "patch": {
         "tags": [
@@ -576,6 +611,18 @@
         }
       }
     },
+    "/api/User/employees": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/WeatherForecast": {
       "get": {
         "tags": [
@@ -619,13 +666,19 @@
   "components": {
     "schemas": {
       "CreateTaskDto": {
+        "required": [
+          "title"
+        ],
         "type": "object",
         "properties": {
           "title": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 100,
+            "minLength": 3,
+            "type": "string"
           },
           "description": {
+            "maxLength": 500,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },
@@ -633,6 +686,8 @@
             "$ref": "#/components/schemas/TaskPriority"
           },
           "assignedUserId": {
+            "maximum": 2147483647,
+            "minimum": 1,
             "type": "integer",
             "format": "int32",
             "nullable": true
@@ -738,13 +793,19 @@
         "format": "int32"
       },
       "UpdateTaskDto": {
+        "required": [
+          "title"
+        ],
         "type": "object",
         "properties": {
           "title": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 100,
+            "minLength": 3,
+            "type": "string"
           },
           "description": {
+            "maxLength": 500,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },
@@ -752,6 +813,8 @@
             "$ref": "#/components/schemas/TaskPriority"
           },
           "assignedUserId": {
+            "maximum": 2147483647,
+            "minimum": 1,
             "type": "integer",
             "format": "int32",
             "nullable": true

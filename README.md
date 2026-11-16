@@ -1,209 +1,126 @@
 # Task Management System
 
-A full-stack Task Management System built using **ASP.NET Core Web API, Entity Framework Core, SQL Server, and React**. The application provides secure authentication and role-based access for Admin and Employee users.
+A full-stack **Task Management System** developed to simplify task creation, employee management, task assignment, and progress tracking. The application provides secure authentication, role-based authorization, and RESTful API integration.
 
-## Tech Stack
+## 🚀 Features
 
-### Backend
-- ASP.NET Core Web API (.NET 8)
-- C#
-- Entity Framework Core
-- SQL Server
-- JWT Authentication
-- BCrypt Password Hashing
-- Clean / Layered Architecture
+- **User Authentication** – Secure registration and login using JWT authentication.
+- **Role-Based Authorization** – Manage access based on user roles and permissions.
+- **Employee Management** – Create and manage employee accounts.
+- **Task Management** – Create, view, and manage tasks.
+- **Task Assignment** – Assign tasks to employees.
+- **Task Status Tracking** – Update and monitor task progress.
+- **RESTful APIs** – Backend APIs built with ASP.NET Core Web API.
+- **Refresh Token** – Token refresh and revocation functionality.
+- **Responsive UI** – User-friendly React-based interface.
+
+## 🛠️ Tech Stack
 
 ### Frontend
-- React
+- React.js
 - JavaScript
+- React Router DOM
+- Axios
 - HTML5
 - CSS3
-- Axios
-- React Router
+- Bootstrap
 
-## Features
+### Backend
+- ASP.NET Core Web API
+- C#
+- Entity Framework Core
+- LINQ
+- JWT Authentication
+- Role-Based Authorization
 
-- User registration and login
-- JWT-based authentication
-- Role-based authorization (Admin and Employee)
-- Admin task management
-- Employee-specific task access
-- Task creation, updating, deletion and viewing
-- Task assignment to employees
-- Task status management
-- Input validation and exception handling
-- Refresh token support
+### Database
+- Microsoft SQL Server
 
-## Project Structure
+### Development Tools
+- Visual Studio
+- Visual Studio Code
+- SQL Server Management Studio
+- Git & GitHub
+- Swagger / OpenAPI
+
+## 📂 Project Structure
 
 ```text
 Task-Management-System/
 │
-├── TaskManagement.API/
-│   ├── Controllers/
-│   ├── Middleware/
-│   ├── Properties/
-│   ├── Program.cs
-│   └── appsettings.json
-│
-├── TaskManagement.Application/
-│   ├── DTOs/
-│   ├── Interfaces/
-│   └── Services/
-│
-├── TaskManagement.Domain/
-│   ├── Entities/
-│   ├── Enums/
-│   └── Interfaces/
-│
-├── TaskManagement.Infrastructure/
-│   ├── Data/
-│   ├── Repositories/
-│   ├── Services/
-│   └── Migrations/
-│
-├── taskmanagement-client/
-│   ├── public/
+├── Frontend/
 │   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   ├── App.jsx
+│   │   └── main.jsx
 │   └── package.json
 │
-└── TaskManagementSystem.sln
+├── Backend/
+│   ├── TaskManagement.API/
+│   ├── TaskManagement.Application/
+│   ├── TaskManagement.Domain/
+│   └── TaskManagement.Infrastructure/
+│
+└── README.md
 ```
 
-## Getting Started
+## ⚙️ Installation & Setup
 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Developer-Ajit515/Task-Management-System.git
-cd Task-Management-System
+git clone https://github.com/YOUR-USERNAME/Task-Management-System.git
 ```
 
 ### 2. Backend Setup
 
-Open the solution in Visual Studio 2022 or use the .NET CLI.
+- Open the backend solution in Visual Studio.
+- Configure your SQL Server connection string in `appsettings.json`.
+- Apply Entity Framework Core migrations if required.
+- Run the ASP.NET Core Web API project.
 
-Restore dependencies:
+### 3. Frontend Setup
 
-```bash
-dotnet restore TaskManagementSystem.sln
-```
-
-### 3. Configure the Database
-
-Update the SQL Server connection string in your development configuration.
-
-Do not commit database passwords or production credentials.
-
-### 4. Configure JWT Secret
-
-Initialize User Secrets for the API project:
-
-```powershell
-dotnet user-secrets init --project ".\TaskManagement.API\TaskManagement.API.csproj"
-```
-
-Generate a secure secret locally and store it:
-
-```powershell
-$rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
-$bytes = New-Object byte[] 64
-$rng.GetBytes($bytes)
-$key = [Convert]::ToBase64String($bytes)
-$rng.Dispose()
-
-dotnet user-secrets set "Jwt:Key" "$key" --project ".\TaskManagement.API\TaskManagement.API.csproj"
-```
-
-Keep the generated secret private. Never commit it to GitHub.
-
-### 5. Apply Entity Framework Core Migrations
-
-Migrations are maintained in the `TaskManagement.Infrastructure` project.
-
-From the repository root, run:
+Navigate to the frontend directory:
 
 ```bash
-dotnet ef database update --project TaskManagement.Infrastructure --startup-project TaskManagement.API
+cd Frontend
 ```
 
-If EF Core CLI is not installed:
+Install dependencies:
 
 ```bash
-dotnet tool install --global dotnet-ef
-```
-
-### 6. Run the Backend
-
-```bash
-dotnet run --project TaskManagement.API
-```
-
-Check the API URL and Swagger URL in the API project's `Properties/launchSettings.json` or terminal output.
-
-### 7. Frontend Setup
-
-Open another terminal:
-
-```bash
-cd taskmanagement-client
 npm install
+```
+
+Start the React development server:
+
+```bash
 npm run dev
 ```
 
-The React application will start using the development URL shown in the terminal.
+### 4. Access the Application
 
-Make sure the frontend API base URL points to the running backend API.
+Open the frontend application in your browser using the development URL displayed in the terminal.
 
-## Authentication and Authorization
+Backend API documentation can be accessed through Swagger when enabled.
 
-The application uses JWT authentication.
+## 🔐 Authentication
 
-- **Admin:** Can manage tasks and access administrative task endpoints.
-- **Employee:** Can access assigned tasks and perform permitted task-status updates.
+The application uses JWT-based authentication to secure API endpoints. Role-based authorization ensures that users can access resources according to their assigned permissions.
 
-Protected API endpoints require a valid JWT access token.
+## 🎯 Project Objective
 
-## Architecture
+The main objective of this project is to build a practical task management solution that helps organizations manage employees, distribute tasks, track work progress, and improve team productivity.
 
-The backend follows a layered architecture:
+## 👨‍💻 Developer
 
-- **API Layer:** Controllers, middleware and HTTP request handling.
-- **Application Layer:** Business services, DTOs and service interfaces.
-- **Domain Layer:** Core entities, enums and repository contracts.
-- **Infrastructure Layer:** Database context, EF Core migrations, repositories and infrastructure services.
+**Developed as a Full Stack Web Development Project.**
 
-## Security
+Technologies: React.js | ASP.NET Core Web API | C# | Entity Framework Core | SQL Server
 
-- JWT secret is configured using .NET User Secrets for local development.
-- Passwords are hashed using BCrypt.
-- Role-based authorization protects restricted endpoints.
-- Refresh tokens are supported.
-- Sensitive configuration values should not be committed to source control.
+---
 
-## Screenshots
-
-### Login Page
-![Login Page](screenshots/login.png)
-
-### Admin Dashboard
-![Admin Dashboard](screenshots/admin-dashboard.png)
-
-### Task List
-![Task List](screenshots/task-list.png)
-
-### Employee Dashboard
-![Employee Dashboard](screenshots/Employee-dashboard.png)
-
-## Future Improvements
-
-- Automated unit and integration tests
-- Improved API documentation
-- Additional reporting and dashboard features
-- Deployment configuration
-
-## Author
-
-**Ajit Singh**
-
-GitHub: https://github.com/Developer-Ajit515
+⭐ If you find this project useful, consider giving it a star!

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import sweetAlert from "../utils/sweetAlert";
 import "./Auth.css";
 
 function Register() {
@@ -26,36 +27,58 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setError("");
     setLoading(true);
 
     try {
       await register(formData);
-      alert("Registration successful! Please login.");
-      navigate("/login");
+
+      await sweetAlert.success(
+  "Registration Successful!",
+  "Your account has been created successfully. Please login."
+);
+
+navigate("/login");
+
     } catch (err) {
+      console.error("Registration Error:", err);
 
-    console.error("Registration Error:", err);
-
-    setError(
+      const errorMessage =
         err.response?.data?.message ||
         err.response?.data?.title ||
         err.message ||
-        "Registration failed."
-    );
+        "Registration failed. Please try again.";
 
-}
+      setError(errorMessage);
+await sweetAlert.error(
+  "Registration Failed!",
+  errorMessage
+);
+
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h2>Create Account</h2>
-        <p className="auth-subtitle">Register to manage your tasks</p>
 
-        {error && <div className="error-message">{error}</div>}
+        <h2>Create Account</h2>
+
+        <p className="auth-subtitle">
+          Register to manage your tasks
+        </p>
+
+        {error && (
+          <div className="error-message">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
+
           <label>Full Name</label>
           <input
             type="text"
@@ -89,11 +112,14 @@ function Register() {
           <button type="submit" disabled={loading}>
             {loading ? "Registering..." : "Register"}
           </button>
+
         </form>
 
         <p className="auth-footer">
-          Already have an account? <Link to="/login">Login</Link>
+          Already have an account?{" "}
+          <Link to="/login">Login</Link>
         </p>
+
       </div>
     </div>
   );

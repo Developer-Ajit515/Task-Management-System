@@ -182,3 +182,24 @@
     border-right-color: var(--border);
   }
 }
+
+
+
+.custom-swal-popup {
+  border-radius: 16px !important;
+  padding: 25px !important;
+  font-family: Arial, sans-serif !important;
+}
+
+.custom-swal-title {
+  font-size: 23px !important;
+  font-weight: 700 !important;
+  color: #1f2937 !important;
+}
+
+.custom-swal-button {
+  border-radius: 8px !important;
+  padding: 11px 24px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}

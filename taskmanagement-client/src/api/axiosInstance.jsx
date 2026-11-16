@@ -8,7 +8,7 @@ const axiosInstance = axios.create({
     }
 });
 
-// JWT Token Interceptor
+// Attach JWT token to every protected API request
 axiosInstance.interceptors.request.use(
     (config) => {
 
@@ -20,9 +20,7 @@ axiosInstance.interceptors.request.use(
 
         return config;
     },
-    (error) => {
-        return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
 );
 
 export default axiosInstance;

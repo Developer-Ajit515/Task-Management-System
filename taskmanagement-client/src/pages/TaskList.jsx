@@ -1,11 +1,17 @@
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import Swal from "sweetalert2";
 import axiosInstance from "../api/axiosInstance";
 import "./Task.css";
 
 function TaskList() {
+    const { user } = useAuth();
+
+    const isAdmin = user?.roles?.includes("Admin");
+    const isEmployee = user?.roles?.includes("Employee");
+
     const [tasks, setTasks] = useState([]);
     const [search, setSearch] = useState("");
     const [priority, setPriority] = useState("");
@@ -21,19 +27,39 @@ function TaskList() {
     const totalPages = Math.ceil(totalCount / pageSize);
 
     // Fetch paginated tasks
-    const fetchTasks = async () => {
+    const fetchTasks = useCallback(async () => {
+        if (!isAdmin && !isEmployee) {
+            setTasks([]);
+            setTotalCount(0);
+            setLoading(false);
+            setError("User role not found. Please login again.");
+            return;
+        }
+
         setLoading(true);
         setError("");
 
         try {
-            const response = await axiosInstance.get("/Tasks", {
-                params: {
-                    search: search || undefined,
-                    priority: priority || undefined,
-                    status: status || undefined,
-                    pageNumber,
-                    pageSize
-                }
+            // Admin gets all tasks.
+            // Employee gets only assigned tasks.
+            const endpoint = isAdmin
+                ? "/Tasks"
+                : "/Tasks/my-tasks";
+
+            const params = {
+                search: search || undefined,
+                status: status || undefined,
+                pageNumber,
+                pageSize
+            };
+
+            // Priority filter is currently supported only by Admin API.
+            if (isAdmin) {
+                params.priority = priority || undefined;
+            }
+
+            const response = await axiosInstance.get(endpoint, {
+                params
             });
 
             const result = response.data;
@@ -56,10 +82,19 @@ function TaskList() {
 
             setTasks([]);
             setTotalCount(0);
+
         } finally {
             setLoading(false);
         }
-    };
+    }, [
+        isAdmin,
+        isEmployee,
+        search,
+        priority,
+        status,
+        pageNumber,
+        pageSize
+    ]);
 
     // Search debounce and API call
     useEffect(() => {
@@ -68,7 +103,7 @@ function TaskList() {
         }, 400);
 
         return () => clearTimeout(timer);
-    }, [search, priority, status, pageNumber, pageSize]);
+    }, [fetchTasks]);
 
     // Reset page when filters change
     const handleSearch = (value) => {
@@ -88,7 +123,7 @@ function TaskList() {
 
     // Priority labels
     const getPriorityLabel = (value) => {
-        switch (value) {
+        switch (Number(value)) {
             case 1:
                 return "Low";
             case 2:
@@ -102,7 +137,7 @@ function TaskList() {
 
     // Status labels
     const getStatusLabel = (value) => {
-        switch (value) {
+        switch (Number(value)) {
             case 1:
                 return "Pending";
             case 2:
@@ -114,7 +149,63 @@ function TaskList() {
         }
     };
 
-    // Delete Task
+
+const handleStatusUpdate = async (task, newStatus) => {
+    const previousStatus = task.status;
+
+    // Optimistic UI update
+    setTasks(previous =>
+        previous.map(item =>
+            item.id === task.id
+                ? { ...item, status: newStatus }
+                : item
+        )
+    );
+
+    try {
+        await axiosInstance.patch(
+            `/Tasks/${task.id}/status`,
+            { status: Number(newStatus) }
+        );
+
+        await Swal.fire({
+            title: "Success!",
+            text: "Task status updated successfully.",
+            icon: "success",
+            timer: 1500,
+            showConfirmButton: false
+        });
+
+    } catch (err) {
+        // Restore previous status
+        setTasks(previous =>
+            previous.map(item =>
+                item.id === task.id
+                    ? { ...item, status: previousStatus }
+                    : item
+            )
+        );
+
+        if (err.response?.status === 403) {
+            Swal.fire(
+                "Access Denied",
+                "You can only update your assigned tasks.",
+                "error"
+            );
+            return;
+        }
+
+        Swal.fire(
+            "Update Failed",
+            err.response?.data?.message ||
+            "Unable to update task status.",
+            "error"
+        );
+    }
+};
+
+
+    // Delete Task - Admin only
     const handleDelete = async (id) => {
         const result = await Swal.fire({
             title: "Are you sure?",
@@ -139,7 +230,7 @@ function TaskList() {
                 confirmButtonColor: "#2563eb"
             });
 
-            // Move to previous page if current page becomes empty
+            // If current page has only one task, go to previous page.
             if (tasks.length === 1 && pageNumber > 1) {
                 setPageNumber((previous) => previous - 1);
             } else {
@@ -170,15 +261,21 @@ function TaskList() {
             <div className="task-list-header">
                 <div>
                     <h2>Task Management</h2>
-                    <p>Search, filter and manage your tasks</p>
+                    <p>
+                        {isAdmin
+                            ? "Search, filter and manage all tasks"
+                            : "View and track your assigned tasks"}
+                    </p>
                 </div>
 
-                <Link
-                    to="/create-task"
-                    className="task-create-btn"
-                >
-                    + Create Task
-                </Link>
+                {isAdmin && (
+                    <Link
+                        to="/create-task"
+                        className="task-create-btn"
+                    >
+                        + Create Task
+                    </Link>
+                )}
             </div>
 
             {/* Search and Filters */}
@@ -192,15 +289,17 @@ function TaskList() {
                     className="task-search"
                 />
 
-                <select
-                    value={priority}
-                    onChange={(e) => handlePriority(e.target.value)}
-                >
-                    <option value="">All Priorities</option>
-                    <option value="1">Low</option>
-                    <option value="2">Medium</option>
-                    <option value="3">High</option>
-                </select>
+                {isAdmin && (
+                    <select
+                        value={priority}
+                        onChange={(e) => handlePriority(e.target.value)}
+                    >
+                        <option value="">All Priorities</option>
+                        <option value="1">Low</option>
+                        <option value="2">Medium</option>
+                        <option value="3">High</option>
+                    </select>
+                )}
 
                 <select
                     value={status}
@@ -245,20 +344,27 @@ function TaskList() {
                             <th>Priority</th>
                             <th>Status</th>
                             <th>Assigned User</th>
-                            <th>Action</th>
+
+                            {isAdmin && <th>Action</th>}
                         </tr>
                     </thead>
 
                     <tbody>
                         {loading ? (
                             <tr>
-                                <td colSpan="7" className="task-empty">
+                                <td
+                                    colSpan={isAdmin ? 7 : 6}
+                                    className="task-empty"
+                                >
                                     Loading tasks...
                                 </td>
                             </tr>
                         ) : tasks.length === 0 ? (
                             <tr>
-                                <td colSpan="7" className="task-empty">
+                                <td
+                                    colSpan={isAdmin ? 7 : 6}
+                                    className="task-empty"
+                                >
                                     No tasks found.
                                 </td>
                             </tr>
@@ -284,45 +390,64 @@ function TaskList() {
                                         </span>
                                     </td>
 
-                                    <td>
-                                        <span
-                                            className={`status-badge status-${task.status}`}
-                                        >
-                                            {getStatusLabel(task.status)}
-                                        </span>
-                                    </td>
+                                    
+<td>
+    {isEmployee ? (
+        <select
+            value={task.status}
+            onChange={(e) =>
+                handleStatusUpdate(task, e.target.value)
+            }
+            className="task-status-select"
+        >
+            <option value="1">Pending</option>
+            <option value="2">In Progress</option>
+            <option value="3">Completed</option>
+        </select>
+    ) : (
+        <span className={`status-badge status-${task.status}`}>
+            {getStatusLabel(task.status)}
+        </span>
+    )}
+</td>
+
 
                                     <td>
                                         {task.assignedUserName || "Not Assigned"}
                                     </td>
 
-                                    <td>
-    <div className="task-actions">
+                                    {/* Admin Actions */}
+                                    {isAdmin && (
+                                        <td>
+                                            <div className="task-actions">
 
-        <Link
-            to={`/tasks/${task.id}`}
-            className="task-view-btn"
-        >
-            View
-        </Link>
+                                                <Link
+                                                    to={`/tasks/${task.id}`}
+                                                    className="task-view-btn"
+                                                >
+                                                    View
+                                                </Link>
 
-        <Link
-            to={`/tasks/edit/${task.id}`}
-            className="task-edit-btn"
-        >
-            Edit
-        </Link>
+                                                <Link
+                                                    to={`/tasks/edit/${task.id}`}
+                                                    className="task-edit-btn"
+                                                >
+                                                    Edit
+                                                </Link>
 
-        <button
-            type="button"
-            className="task-delete-btn"
-            onClick={() => handleDelete(task.id)}
-        >
-            Delete
-        </button>
+                                                <button
+                                                    type="button"
+                                                    className="task-delete-btn"
+                                                    onClick={() =>
+                                                        handleDelete(task.id)
+                                                    }
+                                                >
+                                                    Delete
+                                                </button>
 
-    </div>
-</td>
+                                            </div>
+                                        </td>
+                                    )}
 
                                 </tr>
                             ))
