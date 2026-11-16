@@ -118,6 +118,23 @@ The application uses JWT authentication to protect API endpoints. Refresh-token 
 
 Swagger / OpenAPI is configured in the ASP.NET Core API project. Start the backend and open the Swagger URL displayed by the application.
 
+## Screenshots
+
+### Login Page
+![Login Page](screenshots/login.png)
+
+### Dashboard
+![Dashboard](screenshots/admin-dashboard.png)
+
+### Task List
+![Task List](screenshots/task-list.png)
+
+### Create Task
+![Create Task](screenshots/Create-Task.png)
+
+### User List
+![User List](screenshots/Employee-dashboard.png)
+
 ## Future Improvements
 
 - Automated unit and integration tests
