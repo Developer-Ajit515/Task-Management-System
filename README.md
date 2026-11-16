@@ -123,4 +123,35 @@ Technologies: React.js | ASP.NET Core Web API | C# | Entity Framework Core | SQL
 
 ---
 
+<<<<<<< HEAD
 ⭐ If you find this project useful, consider giving it a star!
+=======
+## Screenshots
+
+### Login Page
+![Login Page](Task-Management-System/screenshots/login.png)
+
+### Admin Dashboard
+![Admin Dashboard](Task-Management-System/screenshots/admin-dashboard.png)
+
+### Employee Dashboard
+![Employee Dashboard](Task-Management-System/screenshots/Employee-dashboard.png)
+
+### Task List
+![Task List](Task-Management-System/screenshots/task-list.png)
+
+
+## Future Improvements
+
+- Automated unit and integration tests
+- Improved API documentation
+- Additional reporting and dashboard features
+- Deployment configuration
+
+## Author
+
+**Ajit Singh**
+
+GitHub: https://github.com/Developer-Ajit515
+LinkedIn: https://www.linkedin.com/in/ajit-singh-62836b158/
+>>>>>>> 825519ded264543a1cc50b88d16510c457b67487
