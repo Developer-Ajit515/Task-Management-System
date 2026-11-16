@@ -150,3 +150,37 @@ Swagger / OpenAPI is configured in the ASP.NET Core API project. Start the backe
 
 - GitHub: https://github.com/Developer-Ajit515
 - LinkedIn: https://www.linkedin.com/in/ajit-singh-62836b158/
+
+
+## Automated Testing
+
+The project includes automated unit and integration tests using xUnit.
+
+### Test Coverage
+
+- Task creation with valid and invalid data
+- Task update and deletion
+- Task ownership and authorization validation
+- Pagination and input validation
+- API authentication and role-based authorization
+- Controller HTTP response validation
+
+### Run Tests
+
+Run the following commands from the solution root directory:
+
+```bash
+dotnet restore
+dotnet build
+dotnet test
+```
+
+### Test Results
+
+- Unit Tests: 13
+- Integration Tests: 6
+- Total Tests: 19
+- Passed: 19
+- Failed: 0
+
+
