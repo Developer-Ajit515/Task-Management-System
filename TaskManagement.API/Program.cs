@@ -1,4 +1,4 @@
-
+﻿
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -228,14 +228,17 @@ if (app.Environment.IsDevelopment())
 // 13. ADMIN SEEDER
 // ==========================================
 
-using (var scope = app.Services.CreateScope())
+if (!app.Environment.IsEnvironment("Testing"))
 {
-    var seeder = new AdminSeeder(
-        scope.ServiceProvider.GetRequiredService<AppDbContext>(),
-        scope.ServiceProvider.GetRequiredService<IConfiguration>()
-    );
+    using (var scope = app.Services.CreateScope())
+    {
+        var seeder = new AdminSeeder(
+            scope.ServiceProvider.GetRequiredService<AppDbContext>(),
+            scope.ServiceProvider.GetRequiredService<IConfiguration>()
+        );
 
-    await seeder.SeedAdminAsync();
+        await seeder.SeedAdminAsync();
+    }
 }
 
 // ==========================================
@@ -261,3 +264,5 @@ app.MapControllers();
 // ==========================================
 
 app.Run();
+
+public partial class Program { }
