@@ -1,0 +1,26 @@
+﻿# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# .NET build files
+**/bin/
+**/obj/
+
+# Node.js
+**/node_modules/
+**/dist/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
