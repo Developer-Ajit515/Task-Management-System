@@ -92,13 +92,13 @@ dotnet user-secrets init
 Set your SQL Server connection string. Replace the example server and database values with your own:
 
 ```powershell
-dotnet user-secrets set "ConnectionStrings:conStr" "Server=(localdb)\\MSSQLLocalDB;Database=TaskManagementDB;Trusted_Connection=True;TrustServerCertificate=True;"
+dotnet user-secrets set "ConnectionStrings:conStr" "Server=(localdb)\MSSQLLocalDB;Database=TaskManagementDB;Trusted_Connection=True;TrustServerCertificate=True;"
 ```
 
 For SQL Server authentication, use your own username and password instead:
 
 ```powershell
-dotnet user-secrets set "ConnectionStrings:conStr" "Server=(localdb)\\MSSQLLocalDB;Database=TaskManagementDB;User Id=YOUR_USERNAME;Password=YOUR_PASSWORD;TrustServerCertificate=True;"
+dotnet user-secrets set "ConnectionStrings:conStr" "Server=(localdb)\MSSQLLocalDB;Database=TaskManagementDB;User Id=YOUR_USERNAME;Password=YOUR_PASSWORD;TrustServerCertificate=True;"
 ```
 
 ### 3. Configure JWT Using User Secrets
