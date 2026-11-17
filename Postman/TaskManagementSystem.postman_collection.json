@@ -1,0 +1,353 @@
+
+{
+  "info": {
+    "name": "Task Management System API",
+    "description": "API collection for authentication, user management, role management, task management and dashboard.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://localhost:7246"
+    },
+    {
+      "key": "accessToken",
+      "value": ""
+    },
+    {
+      "key": "refreshToken",
+      "value": ""
+    },
+    {
+      "key": "adminToken",
+      "value": ""
+    },
+    {
+      "key": "employeeToken",
+      "value": ""
+    },
+    {
+      "key": "userId",
+      "value": "2"
+    },
+    {
+      "key": "taskId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register Employee",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Postman Employee\",\n  \"email\": \"postman.employee@example.com\",\n  \"password\": \"Employee@123\"\n}"
+            },
+            "url": "{{baseUrl}}/api/Auth/register"
+          }
+        },
+        {
+          "name": "Login Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.token) {",
+                  "  pm.collectionVariables.set('adminToken', json.data.token);",
+                  "  pm.collectionVariables.set('accessToken', json.data.token);",
+                  "  pm.collectionVariables.set('refreshToken', json.data.refreshToken);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"{{adminPassword}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/Auth/login"
+          }
+        },
+        {
+          "name": "Login Employee",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.token) {",
+                  "  pm.collectionVariables.set('employeeToken', json.data.token);",
+                  "  pm.collectionVariables.set('accessToken', json.data.token);",
+                  "  pm.collectionVariables.set('refreshToken', json.data.refreshToken);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{employeeEmail}}\",\n  \"password\": \"{{employeePassword}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/Auth/login"
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.token) {",
+                  "  pm.collectionVariables.set('accessToken', json.data.token);",
+                  "  pm.collectionVariables.set('refreshToken', json.data.refreshToken);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/Auth/refresh-token"
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/Auth/logout"
+          }
+        },
+        {
+          "name": "Create Employee (Admin)",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"New Employee\",\n  \"email\": \"new.employee@example.com\",\n  \"password\": \"Employee@123\"\n}"
+            },
+            "url": "{{baseUrl}}/api/Auth/create-employee"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users (Admin)",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/User"
+          }
+        },
+        {
+          "name": "Get User By ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/User/{{userId}}"
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Updated Employee\",\n  \"email\": \"updated.employee@example.com\"\n}"
+            },
+            "url": "{{baseUrl}}/api/User/{{userId}}"
+          }
+        },
+        {
+          "name": "Deactivate User",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/User/{{userId}}"
+          }
+        },
+        {
+          "name": "Get Active Employees",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/User/employees"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tasks",
+      "item": [
+        {
+          "name": "Get All Tasks (Admin)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/Tasks?pageNumber=1&pageSize=10&search=&status=&priority=&assignedUserId="
+          }
+        },
+        {
+          "name": "Get Task By ID (Admin)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/Tasks/{{taskId}}"
+          }
+        },
+        {
+          "name": "Create Task (Admin)",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Complete API integration\",\n  \"description\": \"Integrate and test the task management API.\",\n  \"priority\": 2,\n  \"assignedUserId\": {{userId}}\n}"
+            },
+            "url": "{{baseUrl}}/api/Tasks"
+          }
+        },
+        {
+          "name": "Update Task (Admin)",
+          "request": {
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated API integration\",\n  \"description\": \"Complete integration testing.\",\n  \"priority\": 3,\n  \"assignedUserId\": {{userId}}\n}"
+            },
+            "url": "{{baseUrl}}/api/Tasks/{{taskId}}"
+          }
+        },
+        {
+          "name": "Delete Task (Admin)",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/Tasks/{{taskId}}"
+          }
+        },
+        {
+          "name": "Get My Tasks (Employee)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/Tasks/my-tasks?pageNumber=1&pageSize=10&search=&status="
+          }
+        },
+        {
+          "name": "Get My Task By ID (Employee)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/Tasks/my-tasks/{{taskId}}"
+          }
+        },
+        {
+          "name": "Update Assigned Task Status (Employee)",
+          "request": {
+            "method": "PATCH",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": 2\n}"
+            },
+            "url": "{{baseUrl}}/api/Tasks/{{taskId}}/status"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Roles (Admin)",
+      "item": [
+        {
+          "name": "Get All Roles",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/Role"
+          }
+        },
+        {
+          "name": "Get Role By ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/Role/{{roleId}}"
+          }
+        },
+        {
+          "name": "Get Role By Name",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/Role/name/Admin"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "Dashboard Summary",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/Dashboard/summary"
+          }
+        }
+      ]
+    }
+  ]
+}
