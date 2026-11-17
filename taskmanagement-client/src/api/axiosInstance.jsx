@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: "https://localhost:7246/api",
+    baseURL: "http://localhost:5294/api",
     headers: {
         "Content-Type": "application/json"
     }
@@ -11,7 +11,6 @@ const axiosInstance = axios.create({
 // Attach JWT token to every protected API request
 axiosInstance.interceptors.request.use(
     (config) => {
-
         const token = localStorage.getItem("token");
 
         if (token) {
